@@ -195,7 +195,7 @@ button[type="submit"]:hover {
 
 .dual-column {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -281,7 +281,7 @@ button[type="submit"]:hover {
 .dual-column {
   flex: 1;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   margin-top: 0px;
 }

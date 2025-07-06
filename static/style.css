@@ -296,3 +296,15 @@ button[type="submit"]:hover {
   background: #2c2c2e;
   color: #f1f1f1;
 }
+
+/* Badge drawer styling */
+.badge-drawer summary {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.badge-drawer .chip-row {
+  margin-top: 0.5rem;
+}

@@ -41,10 +41,7 @@
         localStorage.setItem("lastSide", side);
         saveSelectValues();
 
-        setTimeout(() => {
-          window.open("", "_self", "");
-          window.close();
-        }, 100);
+        // Window will be closed by the server response
       }
 
       async function loadPlayers() {

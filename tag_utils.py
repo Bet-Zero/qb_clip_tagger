@@ -21,7 +21,7 @@ def process_clip_tags(clip_path, data):
     situation = data.get("situation", [""])[0]
 
     # Rename file
-    new_name = f"{playtype}_{outcome}.mp4"
+    new_name = f"{playtype}_{situation}_{outcome}.mp4"
     new_dir = BASE_DIR / player / side
     new_dir.mkdir(parents=True, exist_ok=True)
     new_path = new_dir / new_name

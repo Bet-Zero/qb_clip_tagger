@@ -44,7 +44,8 @@ def submit():
     # Reset clip state
     CLIP_STATE["filename"] = ""
     CLIP_STATE["path"] = ""
-    return redirect("/tag")
+     # Return small page that closes the Electron window
+    return render_template("close.html")
 
 
 if __name__ == "__main__":

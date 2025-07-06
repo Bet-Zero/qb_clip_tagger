@@ -308,3 +308,9 @@ button[type="submit"]:hover {
 .badge-drawer .chip-row {
   margin-top: 0.4rem;
 }
+
+/* Placeholder option styling */
+option.placeholder-option {
+  color: #888;
+  font-style: italic;
+}

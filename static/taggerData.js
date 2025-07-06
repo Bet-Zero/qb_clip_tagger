@@ -241,14 +241,18 @@ function populateTags() {
 
   // PlayType & Outcome
   const playSelect = document.querySelector("select[name='playtype']");
-  playSelect.add(new Option("", ""));
+  const playPlaceholder = new Option("Play Type", "");
+  playPlaceholder.className = "placeholder-option";
+  playSelect.add(playPlaceholder);
   playTypes.forEach((opt) => {
     const option = new Option(opt, opt);
     playSelect.add(option);
   });
 
   const outcomeSelect = document.querySelector("select[name='outcome']");
-  outcomeSelect.add(new Option("", ""));
+  const outcomePlaceholder = new Option("Outcome", "");
+  outcomePlaceholder.className = "placeholder-option";
+  outcomeSelect.add(outcomePlaceholder);
   outcomes.forEach((opt) => {
     const option = new Option(opt, opt);
     outcomeSelect.add(option);
@@ -256,14 +260,18 @@ function populateTags() {
 
   // Situation & Context
   const situationSelect = document.querySelector("select[name='situation']");
-  situationSelect.add(new Option("", ""));
+  const situationPlaceholder = new Option("Situation", "");
+  situationPlaceholder.className = "placeholder-option";
+  situationSelect.add(situationPlaceholder);
   situations.forEach((opt) => {
     const option = new Option(opt, opt);
     situationSelect.add(option);
   });
 
   const contextSelect = document.querySelector("select[name='context']");
-  contextSelect.add(new Option("", ""));
+  const contextPlaceholder = new Option("Context", "");
+  contextPlaceholder.className = "placeholder-option";
+  contextSelect.add(contextPlaceholder);
   contexts.forEach((opt) => {
     const option = new Option(opt, opt);
     contextSelect.add(option);
@@ -275,8 +283,12 @@ function populateTags() {
   );
   if (roleSelects.length >= 2) {
     const [offenseSelect, defenseSelect] = roleSelects;
-    offenseSelect.add(new Option("", ""));
-    defenseSelect.add(new Option("", ""));
+    const offensePlaceholder = new Option("Offense Role", "");
+    offensePlaceholder.className = "placeholder-option";
+    offenseSelect.add(offensePlaceholder);
+    const defensePlaceholder = new Option("Defense Role", "");
+    defensePlaceholder.className = "placeholder-option";
+    defenseSelect.add(defensePlaceholder);
     offensiveRoles.forEach((role) => {
       offenseSelect.add(new Option(role, role));
     });

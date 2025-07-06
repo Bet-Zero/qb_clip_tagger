@@ -283,7 +283,7 @@ button[type="submit"]:hover {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: -2px;
+  margin-top: 0px;
 }
 
 .column-block h3 {
@@ -305,6 +305,8 @@ button[type="submit"]:hover {
   font-size: 13px;
   font-weight: 600;
   color: #aaa;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .column-block .filter-input {
@@ -322,6 +324,15 @@ button[type="submit"]:hover {
   border-radius: 6px;
   background: #2c2c2e;
   color: #f1f1f1;
+}
+
+/* Center the Roles section header */
+#roles-section > label {
+  display: block;
+  text-align: center;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #bbb;
 }
 
 /* Badge drawer styling */

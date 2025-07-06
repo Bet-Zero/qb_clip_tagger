@@ -113,6 +113,8 @@ const traits = [
   "Energy",
 ];
 
+const badges = ["All-Star", "Rim Protector", "Sharpshooter", "Playmaker"];
+
 const playTypes = [
   "Spot-Up Jumper",
   "Catch & Drive",
@@ -239,9 +241,7 @@ function populateTags() {
   });
 
   // Roles (Offense & Defense)
-  const roleLists = document.querySelectorAll(
-    ".tag-section label:contains('Roles') ~ .dual-column .tag-list"
-  );
+  const roleLists = document.querySelectorAll("#roles-section .tag-list");
   if (roleLists.length >= 2) {
     const [offenseList, defenseList] = roleLists;
     offensiveRoles.forEach((role) =>
@@ -253,9 +253,7 @@ function populateTags() {
   }
 
   // SubRoles (Offense & Defense, with Positive/Negative sections)
-  const subroleLists = document.querySelectorAll(
-    ".tag-section label:contains('SubRoles') ~ .dual-column .tag-list"
-  );
+  const subroleLists = document.querySelectorAll("#subroles-section .tag-list");
   if (subroleLists.length >= 2) {
     const [offenseList, defenseList] = subroleLists;
 

@@ -11,7 +11,11 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:5000/tag");
+  const clipArg = process.argv[2];
+  const url = clipArg
+    ? `http://localhost:5000/tag?file=${encodeURIComponent(clipArg)}`
+    : "http://localhost:5000/tag";
+  win.loadURL(url);
 }
 
 app.whenReady().then(() => {

@@ -55,7 +55,8 @@
       }
 
       function filterList(input) {
-        const container = input.nextElementSibling;
+        const box = input.closest(".tag-box");
+        const container = box.querySelector(".tag-list");
         const query = input.value.toLowerCase();
         const tags = container.querySelectorAll(".selectable");
 
@@ -113,60 +114,68 @@
           <label>Roles</label>
           <div class="dual-column compact-mode">
             <div class="column-block">
-              <div class="box-header-row">
-                <span class="box-title">Offense</span>
-                <input
-                  type="text"
-                  class="filter-input"
-                  placeholder="Search..."
-                  oninput="filterList(this)"
-                />
+              <div class="tag-box">
+                <div class="box-header-row">
+                  <span class="box-title">Offense</span>
+                  <input
+                    type="text"
+                    class="filter-input"
+                    placeholder="Search..."
+                    oninput="filterList(this)"
+                  />
+                </div>
+                <div class="tag-list scrollable" data-filter-group></div>
               </div>
-              <div class="tag-list scrollable" data-filter-group></div>
             </div>
             <div class="column-block">
-              <div class="box-header-row">
-                <span class="box-title">Defense</span>
-                <input
-                  type="text"
-                  class="filter-input"
-                  placeholder="Search..."
-                  oninput="filterList(this)"
-                />
+              <div class="tag-box">
+                <div class="box-header-row">
+                  <span class="box-title">Defense</span>
+                  <input
+                    type="text"
+                    class="filter-input"
+                    placeholder="Search..."
+                    oninput="filterList(this)"
+                  />
+                </div>
+                <div class="tag-list scrollable" data-filter-group></div>
               </div>
-              <div class="tag-list scrollable" data-filter-group></div>
             </div>
           </div>
           <input type="hidden" name="roles" />
         </div>
 
         <!-- SubRoles -->
-        <div class="tag-section">
+        <div id="roles-section" class="tag-section">
           <label>SubRoles</label>
           <div class="dual-column compact-mode">
             <div class="column-block">
-              <div class="box-header-row">
-                <span class="box-title">Offense</span>
-                <input
-                  type="text"
-                  class="filter-input"
-                  placeholder="Search..."
-                  oninput="filterList(this)"
-                />
+              <div class="tag-box">
+                <div class="box-header-row">
+                  <span class="box-title">Offense</span>
+                  <input
+                    type="text"
+                    class="filter-input"
+                    placeholder="Search..."
+                    oninput="filterList(this)"
+                  />
+                </div>
+                <div class="tag-list scrollable" data-filter-group></div>
               </div>
-              <div class="tag-list scrollable" data-filter-group></div>
             </div>
             <div class="column-block">
-              <div class="box-header-row">
-                <span class="box-title">Defense</span>
-                <input
-                  type="text"
-                  class="filter-input"
-                  placeholder="Search..."
-                  oninput="filterList(this)"
-                />
+              <div class="tag-box">
+                <div class="box-header-row">
+                  <span class="box-title">Defense</span>
+                  <input
+                    type="text"
+                    class="filter-input"
+                    placeholder="Search..."
+                    oninput="filterList(this)"
+                  />
+                </div>
+                <div class="tag-list scrollable" data-filter-group></div>
               </div>
-              <div class="tag-list scrollable" data-filter-group></div>
             </div>
           </div>
           <input type="hidden" name="subroles" />

@@ -184,13 +184,19 @@ button[type="submit"]:hover {
 }
 
 /* === Scrollable Tag List === */
-.tag-list.scrollable {
-  height: 120px; /* Fixed height, always scrollable */
-  overflow-y: auto;
+.tag-box {
   border: 1px solid #444;
   padding: 10px;
   border-radius: 6px;
   background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tag-list.scrollable {
+  height: 120px; /* Fixed height, always scrollable */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px; /* vertical spacing between tags */

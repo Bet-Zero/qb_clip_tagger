@@ -41,9 +41,9 @@ form {
   flex-basis: 180px;
 }
 
-/* Narrower dropdowns */
+/* Ensure dropdowns expand to fill the available row width */
 .form-row select {
-  max-width: 160px;
+  max-width: none;
 }
 
 /* Centered narrower save button */

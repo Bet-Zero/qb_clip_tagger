@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tag Clip</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script>
+      function closeAfterSubmit() {
+        const player = document.querySelector('input[name="player"]').value;
+        const side =
+          document.querySelector(".toggle-button.selected")?.dataset.value ||
+          "Offense";
+        localStorage.setItem("lastPlayer", player);
+        localStorage.setItem("lastSide", side);
+
+        setTimeout(() => {
+          window.open("", "_self", "");
+          window.close();
+        }, 100);
+      }
+
+      window.onload = function () {
+        const lastPlayer = localStorage.getItem("lastPlayer");
+        const lastSide = localStorage.getItem("lastSide");
+
+        if (lastPlayer)
+          document.querySelector('input[name="player"]').value = lastPlayer;
+        if (lastSide) {
+          document.querySelectorAll(".toggle-button").forEach((btn) => {
+            btn.classList.toggle("selected", btn.dataset.value === lastSide);
+          });
+          document.querySelector('input[name="side"]').value = lastSide;
+        }
+      };
+
+      function toggleSelectLabel(event) {
+        event.target.classList.toggle("selected");
+        const field = event.target.dataset.field;
+        const input = document.querySelector(`input[name="${field}"]`);
+        const selected = [
+          ...document.querySelectorAll(
+            `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
+          ),
+        ].map((el) => el.textContent);
+        input.value = selected.join(",");
+      }
+
+      function toggleSide(event) {
+        document
+          .querySelectorAll(".toggle-button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        event.target.classList.add("selected");
+        document.querySelector('input[name="side"]').value =
+          event.target.dataset.value;
+      }
+
+      function filterList(input) {
+        const container = input.nextElementSibling;
+        const query = input.value.toLowerCase();
+        const tags = container.querySelectorAll(".selectable");
+
+        tags.forEach((tag) => {
+          const text = tag.textContent.toLowerCase();
+          tag.style.display = text.includes(query) ? "block" : "none";
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Tag Clip: {{ clip.filename }}</h1>
+      <form method="POST" action="/submit" onsubmit="closeAfterSubmit()">
+        <div class="form-row">
+          <input name="player" placeholder="LeBron James" required />
+          <div class="toggle-group">
+            <div
+              class="toggle-button selected"
+              data-value="Offense"
+              onclick="toggleSide(event)"
+            >
+              Offense
+            </div>
+            <div
+              class="toggle-button"
+              data-value="Defense"
+              onclick="toggleSide(event)"
+            >
+              Defense
+            </div>
+          </div>
+          <input type="hidden" name="side" value="Offense" />
+        </div>
+
+        <div class="form-row">
+          <select name="playtype"></select>
+          <select name="outcome"></select>
+        </div>
+
+        <div class="form-row">
+          <select name="situation"></select>
+          <select name="context"></select>
+        </div>
+
+        <div class="form-group">
+          <label>Traits</label>
+          <div class="chip-row" data-field="traits"></div>
+          <input type="hidden" name="traits" />
+        </div>
+
+        <!-- Roles -->
+        <div class="tag-section">
+          <label>Roles</label>
+          <div class="dual-column compact-mode">
+            <div class="column-block">
+              <div class="box-header-row">
+                <span class="box-title">Offense</span>
+                <input
+                  type="text"
+                  class="filter-input"
+                  placeholder="Search..."
+                  oninput="filterList(this)"
+                />
+              </div>
+              <div class="tag-list scrollable" data-filter-group></div>
+            </div>
+            <div class="column-block">
+              <div class="box-header-row">
+                <span class="box-title">Defense</span>
+                <input
+                  type="text"
+                  class="filter-input"
+                  placeholder="Search..."
+                  oninput="filterList(this)"
+                />
+              </div>
+              <div class="tag-list scrollable" data-filter-group></div>
+            </div>
+          </div>
+          <input type="hidden" name="roles" />
+        </div>
+
+        <!-- SubRoles -->
+        <div class="tag-section">
+          <label>SubRoles</label>
+          <div class="dual-column compact-mode">
+            <div class="column-block">
+              <div class="box-header-row">
+                <span class="box-title">Offense</span>
+                <input
+                  type="text"
+                  class="filter-input"
+                  placeholder="Search..."
+                  oninput="filterList(this)"
+                />
+              </div>
+              <div class="tag-list scrollable" data-filter-group></div>
+            </div>
+            <div class="column-block">
+              <div class="box-header-row">
+                <span class="box-title">Defense</span>
+                <input
+                  type="text"
+                  class="filter-input"
+                  placeholder="Search..."
+                  oninput="filterList(this)"
+                />
+              </div>
+              <div class="tag-list scrollable" data-filter-group></div>
+            </div>
+          </div>
+          <input type="hidden" name="subroles" />
+        </div>
+
+        <div class="form-group">
+          <label>Badges</label>
+          <div class="chip-row" data-field="badges"></div>
+          <input type="hidden" name="badges" />
+        </div>
+
+        <button type="submit">💾 Save Clip</button>
+      </form>
+    </div>
+
+    <!-- Inject tag data -->
+    <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
+  </body>
+</html>

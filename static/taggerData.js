@@ -241,12 +241,14 @@ function populateTags() {
 
   // PlayType & Outcome
   const playSelect = document.querySelector("select[name='playtype']");
+  playSelect.add(new Option("", ""));
   playTypes.forEach((opt) => {
     const option = new Option(opt, opt);
     playSelect.add(option);
   });
 
   const outcomeSelect = document.querySelector("select[name='outcome']");
+  outcomeSelect.add(new Option("", ""));
   outcomes.forEach((opt) => {
     const option = new Option(opt, opt);
     outcomeSelect.add(option);
@@ -254,12 +256,14 @@ function populateTags() {
 
   // Situation & Context
   const situationSelect = document.querySelector("select[name='situation']");
+  situationSelect.add(new Option("", ""));
   situations.forEach((opt) => {
     const option = new Option(opt, opt);
     situationSelect.add(option);
   });
 
   const contextSelect = document.querySelector("select[name='context']");
+  contextSelect.add(new Option("", ""));
   contexts.forEach((opt) => {
     const option = new Option(opt, opt);
     contextSelect.add(option);
@@ -271,6 +275,8 @@ function populateTags() {
   );
   if (roleSelects.length >= 2) {
     const [offenseSelect, defenseSelect] = roleSelects;
+    offenseSelect.add(new Option("", ""));
+    defenseSelect.add(new Option("", ""));
     offensiveRoles.forEach((role) => {
       offenseSelect.add(new Option(role, role));
     });
@@ -279,17 +285,17 @@ function populateTags() {
     });
 
     const hiddenInput = document.querySelector("input[name='roles']");
-    const updateRoles = () => {
+    window.updateRoles = () => {
       const selected = [offenseSelect.value, defenseSelect.value].filter(
         Boolean
       );
       hiddenInput.value = selected.join(",");
     };
 
-    offenseSelect.addEventListener("change", updateRoles);
-    defenseSelect.addEventListener("change", updateRoles);
+    offenseSelect.addEventListener("change", window.updateRoles);
+    defenseSelect.addEventListener("change", window.updateRoles);
     // Initialize hidden value
-    updateRoles();
+    window.updateRoles();
   }
 
   // SubRoles (Offense & Defense, with Positive/Negative sections)

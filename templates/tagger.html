@@ -5,6 +5,33 @@
     <title>Tag Clip</title>
     <link rel="stylesheet" href="/static/style.css" />
     <script>
+      function saveSelectValues() {
+        localStorage.setItem(
+          "lastPlayType",
+          document.querySelector("select[name='playtype']").value
+        );
+        localStorage.setItem(
+          "lastOutcome",
+          document.querySelector("select[name='outcome']").value
+        );
+        localStorage.setItem(
+          "lastSituation",
+          document.querySelector("select[name='situation']").value
+        );
+        localStorage.setItem(
+          "lastContext",
+          document.querySelector("select[name='context']").value
+        );
+        localStorage.setItem(
+          "lastOffenseRole",
+          document.querySelector("select[name='offense_role']").value
+        );
+        localStorage.setItem(
+          "lastDefenseRole",
+          document.querySelector("select[name='defense_role']").value
+        );
+      }
+
       function closeAfterSubmit() {
         const player = document.querySelector('input[name="player"]').value;
         const side =
@@ -12,6 +39,7 @@
           "Offense";
         localStorage.setItem("lastPlayer", player);
         localStorage.setItem("lastSide", side);
+        saveSelectValues();
 
         setTimeout(() => {
           window.open("", "_self", "");
@@ -35,6 +63,34 @@
         }
       }
 
+      function setSelectValues() {
+        document.querySelector("select[name='playtype']").value =
+          localStorage.getItem("lastPlayType") || "";
+        document.querySelector("select[name='outcome']").value =
+          localStorage.getItem("lastOutcome") || "";
+        document.querySelector("select[name='situation']").value =
+          localStorage.getItem("lastSituation") || "";
+        document.querySelector("select[name='context']").value =
+          localStorage.getItem("lastContext") || "";
+        document.querySelector("select[name='offense_role']").value =
+          localStorage.getItem("lastOffenseRole") || "";
+        document.querySelector("select[name='defense_role']").value =
+          localStorage.getItem("lastDefenseRole") || "";
+        if (typeof updateRoles === "function") updateRoles();
+      }
+
+      function clearSavedSelections() {
+        [
+          "lastPlayType",
+          "lastOutcome",
+          "lastSituation",
+          "lastContext",
+          "lastOffenseRole",
+          "lastDefenseRole",
+        ].forEach((k) => localStorage.removeItem(k));
+        setSelectValues();
+      }
+
       window.onload = function () {
         const lastPlayer = localStorage.getItem("lastPlayer");
         const lastSide = localStorage.getItem("lastSide");
@@ -48,6 +104,15 @@
           document.querySelector('input[name="side"]').value = lastSide;
         }
         loadPlayers();
+        setSelectValues();
+
+        document
+          .querySelector('input[name="player"]')
+          .addEventListener("input", (e) => {
+            if (e.target.value !== localStorage.getItem("lastPlayer")) {
+              clearSavedSelections();
+            }
+          });
       };
 
       function toggleSelectLabel(event) {
@@ -69,6 +134,9 @@
         event.target.classList.add("selected");
         document.querySelector('input[name="side"]').value =
           event.target.dataset.value;
+        if (event.target.dataset.value !== localStorage.getItem("lastSide")) {
+          clearSavedSelections();
+        }
       }
 
       function filterList(input) {

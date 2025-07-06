@@ -283,10 +283,10 @@ function populateTags() {
   );
   if (roleSelects.length >= 2) {
     const [offenseSelect, defenseSelect] = roleSelects;
-    const offensePlaceholder = new Option("", "");
+    const offensePlaceholder = new Option("Offense", "");
     offensePlaceholder.className = "placeholder-option";
     offenseSelect.add(offensePlaceholder);
-    const defensePlaceholder = new Option("", "");
+    const defensePlaceholder = new Option("Defense", "");
     defensePlaceholder.className = "placeholder-option";
     defenseSelect.add(defensePlaceholder);
     offensiveRoles.forEach((role) => {

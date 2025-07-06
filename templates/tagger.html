@@ -19,6 +19,22 @@
         }, 100);
       }
 
+      async function loadPlayers() {
+        try {
+          const res = await fetch("/players");
+          if (!res.ok) return;
+          const data = await res.json();
+          const list = document.getElementById("player-list");
+          data.players.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = p;
+            list.appendChild(opt);
+          });
+        } catch (e) {
+          console.error("Failed to load players", e);
+        }
+      }
+
       window.onload = function () {
         const lastPlayer = localStorage.getItem("lastPlayer");
         const lastSide = localStorage.getItem("lastSide");
@@ -31,6 +47,7 @@
           });
           document.querySelector('input[name="side"]').value = lastSide;
         }
+        loadPlayers();
       };
 
       function toggleSelectLabel(event) {
@@ -73,7 +90,13 @@
       <h1>Tag Clip: {{ clip.filename }}</h1>
       <form method="POST" action="/submit" onsubmit="closeAfterSubmit()">
         <div class="form-row">
-          <input name="player" placeholder="LeBron James" required />
+          <input
+            name="player"
+            placeholder="LeBron James"
+            required
+            list="player-list"
+          />
+          <datalist id="player-list"></datalist>
           <div class="toggle-group">
             <div
               class="toggle-button selected"
@@ -112,34 +135,14 @@
         <!-- Roles -->
         <div id="roles-section" class="tag-section">
           <label>Roles</label>
-          <div class="dual-column compact-mode">
+          <div class="dual-column">
             <div class="column-block">
-              <div class="tag-box">
-                <div class="box-header-row">
-                  <span class="box-title">Offense</span>
-                  <input
-                    type="text"
-                    class="filter-input"
-                    placeholder="Search..."
-                    oninput="filterList(this)"
-                  />
-                </div>
-                <div class="tag-list scrollable" data-filter-group></div>
-              </div>
+              <label class="box-title">Offense</label>
+              <select class="role-select" name="offense_role"></select>
             </div>
             <div class="column-block">
-              <div class="tag-box">
-                <div class="box-header-row">
-                  <span class="box-title">Defense</span>
-                  <input
-                    type="text"
-                    class="filter-input"
-                    placeholder="Search..."
-                    oninput="filterList(this)"
-                  />
-                </div>
-                <div class="tag-list scrollable" data-filter-group></div>
-              </div>
+              <label class="box-title">Defense</label>
+              <select class="role-select" name="defense_role"></select>
             </div>
           </div>
           <input type="hidden" name="roles" />

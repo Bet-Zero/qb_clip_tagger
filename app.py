@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from tag_utils import process_clip_tags
 from pathlib import Path
 
@@ -7,6 +7,16 @@ app = Flask(__name__)
 
 # Store path separately so we can reuse it
 CLIP_STATE = {"filename": "", "path": ""}
+
+@app.route("/players")
+def players():
+    base = Path("/Volumes/Samsung PSSD T7/NBAFilm")
+    names = []
+    if base.exists():
+        for entry in base.iterdir():
+            if entry.is_dir() and not entry.name.startswith("_") and not entry.name.startswith("."):
+                names.append(entry.name)
+    return jsonify({"players": names})
 
 @app.route("/tag")
 def tag_form():

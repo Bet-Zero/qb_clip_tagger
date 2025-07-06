@@ -113,7 +113,32 @@ const traits = [
   "Energy",
 ];
 
-const badges = ["All-Star", "Rim Protector", "Sharpshooter", "Playmaker"];
+const badges = [
+  "Sniper",
+  "Dimes",
+  "Bucket",
+  "Handles",
+  "Board Man",
+  "High Flyer",
+  "Bully",
+  "Speed",
+  "Floor General",
+  "Clutch",
+  "High Motor",
+  "High IQ",
+  "Coach's Dream",
+  "Versatile",
+  "Chess Piece",
+  "Dog",
+  "Leader",
+  "Lockdown Defender",
+  "Glue Guy",
+  "Disruptor",
+  "Mismatch Nightmare",
+  "Iron Man",
+  "Cool Under Pressure",
+  "Veteran Presence",
+];
 
 const playTypes = [
   "Spot-Up Jumper",
@@ -241,15 +266,30 @@ function populateTags() {
   });
 
   // Roles (Offense & Defense)
-  const roleLists = document.querySelectorAll("#roles-section .tag-list");
-  if (roleLists.length >= 2) {
-    const [offenseList, defenseList] = roleLists;
-    offensiveRoles.forEach((role) =>
-      offenseList.appendChild(createSelectable(role, "roles"))
-    );
-    defensiveRoles.forEach((role) =>
-      defenseList.appendChild(createSelectable(role, "roles"))
-    );
+  const roleSelects = document.querySelectorAll(
+    "#roles-section select.role-select"
+  );
+  if (roleSelects.length >= 2) {
+    const [offenseSelect, defenseSelect] = roleSelects;
+    offensiveRoles.forEach((role) => {
+      offenseSelect.add(new Option(role, role));
+    });
+    defensiveRoles.forEach((role) => {
+      defenseSelect.add(new Option(role, role));
+    });
+
+    const hiddenInput = document.querySelector("input[name='roles']");
+    const updateRoles = () => {
+      const selected = [offenseSelect.value, defenseSelect.value].filter(
+        Boolean
+      );
+      hiddenInput.value = selected.join(",");
+    };
+
+    offenseSelect.addEventListener("change", updateRoles);
+    defenseSelect.addEventListener("change", updateRoles);
+    // Initialize hidden value
+    updateRoles();
   }
 
   // SubRoles (Offense & Defense, with Positive/Negative sections)

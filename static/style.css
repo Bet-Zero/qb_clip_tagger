@@ -6,7 +6,7 @@ body {
 }
 .container {
   background: #1f1f22;
-  max-width: 440px;
+  max-width: 360px;
   margin: 0 auto;
   padding: 0.75rem;
   border-radius: 12px;
@@ -36,6 +36,33 @@ form {
   background: #2c2c2e;
   color: #f1f1f1;
 }
+/* Narrower player input */
+.form-row input[name="player"] {
+  flex-basis: 180px;
+}
+
+/* Narrower dropdowns */
+.form-row select {
+  max-width: 160px;
+}
+
+/* Centered narrower save button */
+button[type="submit"] {
+  background: #9333ea;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease background;
+  align-self: center;
+  width: 140px;
+}
+button[type="submit"]:hover {
+  background: #7c3aed;
+}
+
 .form-group label {
   font-size: 0.85rem;
   margin-bottom: 0.25rem;

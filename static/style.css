@@ -309,8 +309,27 @@ button[type="submit"]:hover {
   margin-top: 0.4rem;
 }
 
+/* Subrole drawer styling */
+.subrole-drawer summary {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.subrole-drawer #subroles-section {
+  margin-top: 0.4rem;
+}
+
 /* Placeholder option styling */
 option.placeholder-option {
   color: #888;
   font-style: italic;
+}
+
+/* Thin divider for form sections */
+.section-divider {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 0.75rem 0;
 }

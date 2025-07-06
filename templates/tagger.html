@@ -184,6 +184,8 @@
           <input type="hidden" name="side" value="Offense" />
         </div>
 
+        <hr class="section-divider" />
+
         <div class="form-row">
           <select name="playtype"></select>
           <select name="outcome"></select>
@@ -217,40 +219,42 @@
         </div>
 
         <!-- SubRoles -->
-        <div id="subroles-section" class="tag-section">
-          <label>SubRoles</label>
-          <div class="dual-column compact-mode">
-            <div class="column-block">
-              <div class="tag-box">
-                <div class="box-header-row">
-                  <span class="box-title">Offense</span>
-                  <input
-                    type="text"
-                    class="filter-input"
-                    placeholder="Search..."
-                    oninput="filterList(this)"
-                  />
+        <details class="subrole-drawer">
+          <summary>SubRoles</summary>
+          <div id="subroles-section" class="tag-section">
+            <div class="dual-column compact-mode">
+              <div class="column-block">
+                <div class="tag-box">
+                  <div class="box-header-row">
+                    <span class="box-title">Offense</span>
+                    <input
+                      type="text"
+                      class="filter-input"
+                      placeholder="Search..."
+                      oninput="filterList(this)"
+                    />
+                  </div>
+                  <div class="tag-list scrollable" data-filter-group></div>
                 </div>
-                <div class="tag-list scrollable" data-filter-group></div>
+              </div>
+              <div class="column-block">
+                <div class="tag-box">
+                  <div class="box-header-row">
+                    <span class="box-title">Defense</span>
+                    <input
+                      type="text"
+                      class="filter-input"
+                      placeholder="Search..."
+                      oninput="filterList(this)"
+                    />
+                  </div>
+                  <div class="tag-list scrollable" data-filter-group></div>
+                </div>
               </div>
             </div>
-            <div class="column-block">
-              <div class="tag-box">
-                <div class="box-header-row">
-                  <span class="box-title">Defense</span>
-                  <input
-                    type="text"
-                    class="filter-input"
-                    placeholder="Search..."
-                    oninput="filterList(this)"
-                  />
-                </div>
-                <div class="tag-list scrollable" data-filter-group></div>
-              </div>
-            </div>
+            <input type="hidden" name="subroles" />
           </div>
-          <input type="hidden" name="subroles" />
-        </div>
+        </details>
 
         <div class="form-group">
           <details class="badge-drawer">

@@ -103,11 +103,12 @@ const defensiveSubrolesNegative = [
 ];
 
 const traits = [
-  "Defense",
   "Shooting",
-  "Playmaking",
+  "Scoring",
   "Passing",
+  "Playmaking",
   "Rebounding",
+  "Defense",
   "IQ",
   "Feel",
   "Energy",
@@ -209,7 +210,7 @@ function createChip(text, field) {
   chip.className = "chip";
   chip.textContent = text;
   chip.dataset.field = field;
-  chip.onclick = toggleSelectLabel;
+  chip.addEventListener("click", toggleSelectLabel);
   return chip;
 }
 
@@ -218,7 +219,7 @@ function createSelectable(text, field) {
   tag.className = "selectable";
   tag.textContent = text;
   tag.dataset.field = field;
-  tag.onclick = toggleSelectLabel;
+  tag.addEventListener("click", toggleSelectLabel);
   return tag;
 }
 

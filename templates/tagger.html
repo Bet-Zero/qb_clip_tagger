@@ -113,8 +113,9 @@
       };
 
       function toggleSelectLabel(event) {
-        event.target.classList.toggle("selected");
-        const field = event.target.dataset.field;
+        const target = event.currentTarget || event.target;
+        target.classList.toggle("selected");
+        const field = target.dataset.field;
         const input = document.querySelector(`input[name="${field}"]`);
         const selected = [
           ...document.querySelectorAll(

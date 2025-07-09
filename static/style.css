@@ -14,7 +14,7 @@ body {
 }
 h1 {
   font-size: 1.25rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
   color: #fff;
 }
 form {
@@ -36,6 +36,24 @@ form {
   background: #2c2c2e;
   color: #f1f1f1;
 }
+
+/* Maintain styles when inputs/selects are focused */
+.form-row input:focus,
+.form-row select:focus,
+.role-select:focus {
+  background: #2c2c2e;
+  color: #f1f1f1;
+  border-color: #333;
+  outline: none;
+}
+
+/* Prevent browser autofill from altering styles */
+.form-row input:-webkit-autofill,
+.form-row select:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #2c2c2e inset;
+  -webkit-text-fill-color: #f1f1f1;
+}
+
 /* Narrower player input */
 .form-row input[name="player"] {
   flex-basis: 180px;
@@ -359,8 +377,55 @@ button[type="submit"]:hover {
   margin-top: 0.4rem;
 }
 
+/* Styling for divider labels inside the subrole lists */
+.subrole-divider {
+  margin: 0.25rem 0;
+  font-size: 0.75rem;
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* Clear visual state for selected subroles */
+.subrole-drawer .selectable.selected {
+  background: #a855f7;
+  color: #fff;
+  position: relative;
+}
+
+/* Show a checkmark when selected */
+.subrole-drawer .selectable.selected::after {
+  content: "\2713"; /* checkmark */
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: #a855f7;
+  background: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Placeholder option styling */
 option.placeholder-option {
+  color: #888;
+  font-style: italic;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* Show placeholder style when selected */
+select:has(option.placeholder-option:checked) {
+  color: #888;
+  font-style: italic;
+}
+
+/* Consistent styling for text field placeholders */
+input::placeholder,
+.filter-input::placeholder {
   color: #888;
   font-style: italic;
 }

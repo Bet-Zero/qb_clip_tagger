@@ -13,6 +13,31 @@
         btn.classList.add("selected");
         document.querySelector('input[name="side"]').value = btn.dataset.value;
       }
+
+      function toggleSelectLabel(event) {
+        const target = event.currentTarget || event.target;
+        target.classList.toggle("selected");
+        const field = target.dataset.field;
+        const input = document.querySelector(`input[name="${field}"]`);
+        const selected = [
+          ...document.querySelectorAll(
+            `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
+          ),
+        ].map((el) => el.textContent);
+        if (input) input.value = selected.join(",");
+      }
+
+      function filterList(input) {
+        const box = input.closest(".tag-box");
+        const container = box.querySelector(".tag-list");
+        const query = input.value.toLowerCase();
+        const tags = container.querySelectorAll(".selectable");
+
+        tags.forEach((tag) => {
+          const text = tag.textContent.toLowerCase();
+          tag.style.display = text.includes(query) ? "block" : "none";
+        });
+      }
     </script>
   </head>
   <body>
@@ -61,6 +86,88 @@
           <select name="outcome"></select>
           <select name="context"></select>
         </div>
+        <hr class="section-divider" />
+
+        <div class="form-group">
+          <label>Traits</label>
+          <div class="chip-row" data-field="traits"></div>
+          <input
+            type="hidden"
+            name="traits"
+            value="{{ args.get('traits','') }}"
+          />
+        </div>
+
+        <div id="roles-section" class="tag-section">
+          <label>Roles</label>
+          <div class="dual-column">
+            <div class="column-block">
+              <select class="role-select" name="offense_role"></select>
+            </div>
+            <div class="column-block">
+              <select class="role-select" name="defense_role"></select>
+            </div>
+          </div>
+          <input
+            type="hidden"
+            name="roles"
+            value="{{ args.get('roles','') }}"
+          />
+        </div>
+
+        <details class="subrole-drawer">
+          <summary>SubRoles</summary>
+          <div id="subroles-section" class="tag-section">
+            <div class="dual-column compact-mode">
+              <div class="column-block">
+                <div class="tag-box">
+                  <div class="box-header-row">
+                    <span class="box-title">Offense</span>
+                    <input
+                      type="text"
+                      class="filter-input"
+                      placeholder="Search..."
+                      oninput="filterList(this)"
+                    />
+                  </div>
+                  <div class="tag-list scrollable" data-filter-group></div>
+                </div>
+              </div>
+              <div class="column-block">
+                <div class="tag-box">
+                  <div class="box-header-row">
+                    <span class="box-title">Defense</span>
+                    <input
+                      type="text"
+                      class="filter-input"
+                      placeholder="Search..."
+                      oninput="filterList(this)"
+                    />
+                  </div>
+                  <div class="tag-list scrollable" data-filter-group></div>
+                </div>
+              </div>
+            </div>
+            <input
+              type="hidden"
+              name="subroles"
+              value="{{ args.get('subroles','') }}"
+            />
+          </div>
+        </details>
+
+        <div class="form-group">
+          <details class="badge-drawer">
+            <summary>Badges</summary>
+            <div class="chip-row" data-field="badges"></div>
+          </details>
+          <input
+            type="hidden"
+            name="badges"
+            value="{{ args.get('badges','') }}"
+          />
+        </div>
+
         <button type="submit">🔍 Search</button>
       </form>
       {% if results %}

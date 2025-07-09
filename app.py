@@ -42,6 +42,10 @@ def search_page():
             "outcome": request.args.get("outcome"),
             "context": request.args.get("context"),
             "situation": request.args.get("situation"),
+            "traits": request.args.get("traits", "").split(",") if request.args.get("traits") else [],
+            "roles": request.args.get("roles", "").split(",") if request.args.get("roles") else [],
+            "subroles": request.args.get("subroles", "").split(",") if request.args.get("subroles") else [],
+            "badges": request.args.get("badges", "").split(",") if request.args.get("badges") else [],
         }
         logs = load_logs()
         for entry in logs:

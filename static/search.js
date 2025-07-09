@@ -1,52 +1,47 @@
 function populateSearch() {
+  const params = new URLSearchParams(window.location.search);
+
   const playSelect = document.querySelector("select[name='playtype']");
+  if (playSelect) playSelect.value = params.get("playtype") || "";
+
   const situationSelect = document.querySelector("select[name='situation']");
+  if (situationSelect) situationSelect.value = params.get("situation") || "";
+
   const outcomeSelect = document.querySelector("select[name='outcome']");
+  if (outcomeSelect) outcomeSelect.value = params.get("outcome") || "";
+
   const contextSelect = document.querySelector("select[name='context']");
+  if (contextSelect) contextSelect.value = params.get("context") || "";
 
-  if (playSelect) {
-    const playPlaceholder = new Option("Play Type", "");
-    playPlaceholder.className = "placeholder-option";
-    playSelect.add(playPlaceholder);
-    if (window.playTypes) {
-      window.playTypes.forEach((p) => playSelect.add(new Option(p, p)));
-    }
-    playSelect.value =
-      new URLSearchParams(window.location.search).get("playtype") || "";
+  // Roles (offense/defense selects)
+  const rolesVal = params.get("roles");
+  if (rolesVal) {
+    const [off, def] = rolesVal.split(",");
+    const offenseSelect = document.querySelector("select[name='offense_role']");
+    const defenseSelect = document.querySelector("select[name='defense_role']");
+    if (offenseSelect) offenseSelect.value = off || "";
+    if (defenseSelect) defenseSelect.value = def || "";
+    if (typeof updateRoles === "function") updateRoles();
   }
 
-  if (situationSelect) {
-    const sitPlaceholder = new Option("Situation", "");
-    sitPlaceholder.className = "placeholder-option";
-    situationSelect.add(sitPlaceholder);
-    if (window.situations) {
-      window.situations.forEach((s) => situationSelect.add(new Option(s, s)));
-    }
-    situationSelect.value =
-      new URLSearchParams(window.location.search).get("situation") || "";
+  function setTagSelections(field) {
+    const val = params.get(field);
+    if (!val) return;
+    const selections = val.split(",").filter(Boolean);
+    document
+      .querySelectorAll(
+        `.selectable[data-field='${field}'], .chip[data-field='${field}']`
+      )
+      .forEach((el) => {
+        if (selections.includes(el.textContent)) {
+          el.classList.add("selected");
+        }
+      });
+    const input = document.querySelector(`input[name='${field}']`);
+    if (input) input.value = val;
   }
 
-  if (outcomeSelect) {
-    const outPlaceholder = new Option("Outcome", "");
-    outPlaceholder.className = "placeholder-option";
-    outcomeSelect.add(outPlaceholder);
-    if (window.outcomes) {
-      window.outcomes.forEach((o) => outcomeSelect.add(new Option(o, o)));
-    }
-    outcomeSelect.value =
-      new URLSearchParams(window.location.search).get("outcome") || "";
-  }
-
-  if (contextSelect) {
-    const ctxPlaceholder = new Option("Context", "");
-    ctxPlaceholder.className = "placeholder-option";
-    contextSelect.add(ctxPlaceholder);
-    if (window.contexts) {
-      window.contexts.forEach((c) => contextSelect.add(new Option(c, c)));
-    }
-    contextSelect.value =
-      new URLSearchParams(window.location.search).get("context") || "";
-  }
+  ["traits", "badges", "subroles"].forEach(setTagSelections);
 }
 
 window.addEventListener("DOMContentLoaded", populateSearch);

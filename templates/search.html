@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Search Clips</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script>
+      function toggleSide(event) {
+        document
+          .querySelectorAll(".toggle-button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        const btn = event.currentTarget;
+        btn.classList.add("selected");
+        document.querySelector('input[name="side"]').value = btn.dataset.value;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Search Clips</h1>
+      <form method="GET" action="/search">
+        <div class="form-row">
+          <input
+            name="player"
+            placeholder="Player"
+            list="player-list"
+            value="{{ args.get('player','') }}"
+          />
+          <datalist id="player-list">
+            {% for p in players %}
+            <option value="{{ p }}"></option>
+            {% endfor %}
+          </datalist>
+          <div class="toggle-group">
+            <div
+              class="toggle-button {% if args.get('side','Offense')=='Offense' %}selected{% endif %}"
+              data-value="Offense"
+              onclick="toggleSide(event)"
+            >
+              Offense
+            </div>
+            <div
+              class="toggle-button {% if args.get('side')=='Defense' %}selected{% endif %}"
+              data-value="Defense"
+              onclick="toggleSide(event)"
+            >
+              Defense
+            </div>
+          </div>
+          <input
+            type="hidden"
+            name="side"
+            value="{{ args.get('side','Offense') }}"
+          />
+        </div>
+        <div class="form-row">
+          <select name="playtype"></select>
+          <select name="situation"></select>
+        </div>
+        <div class="form-row">
+          <select name="outcome"></select>
+          <select name="context"></select>
+        </div>
+        <button type="submit">🔍 Search</button>
+      </form>
+      {% if results %}
+      <hr class="section-divider" />
+      <ul class="results">
+        {% for r in results %}
+        <li>{{ r }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+  </body>
+</html>

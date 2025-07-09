@@ -436,3 +436,15 @@ input::placeholder,
   border-top: 1px solid #333;
   margin: 0.75rem 0;
 }
+
+/* Simple search results styling */
+.results {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.8rem;
+  color: #eee;
+}
+.results li {
+  margin-bottom: 4px;
+  word-break: break-all;
+}

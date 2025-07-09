@@ -1,6 +1,6 @@
 # NBA Clip Tagger
 
-This tool watches a folder for new video clips and pops up a tagging UI. Tagged clips are moved into player folders with a unique filename and a log entry is created. A search script allows finding clips by different criteria.
+This tool watches a folder for new video clips and pops up a tagging UI. Tagged clips are moved into player folders with a unique filename (duplicates get numbered suffixes) and a log entry is created. A search script allows finding clips by different criteria.
 
 ## Setup
 
@@ -28,4 +28,3 @@ Run tests with:
 ```bash
 pytest
 ```
-

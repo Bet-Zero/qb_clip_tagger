@@ -5,6 +5,7 @@ import logging
 
 import config
 from tag_utils import process_clip_tags
+from search_clips import load_logs, matches
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -12,15 +13,42 @@ logging.basicConfig(level=logging.INFO)
 # Store path separately so we can reuse it
 CLIP_STATE = {"filename": "", "path": ""}
 
-@app.route("/players")
-def players():
+
+# Helper to list player folders
+def get_player_names():
     base = config.BASE_DIR
     names = []
     if base.exists():
         for entry in base.iterdir():
             if entry.is_dir() and not entry.name.startswith("_") and not entry.name.startswith("."):
                 names.append(entry.name)
-    return jsonify({"players": names})
+    return names
+
+
+@app.route("/players")
+def players():
+    return jsonify({"players": get_player_names()})
+
+
+@app.route("/search")
+def search_page():
+    players = get_player_names()
+    results = []
+    if request.args:
+        filters = {
+            "player": request.args.get("player"),
+            "side": request.args.get("side"),
+            "playtype": request.args.get("playtype"),
+            "outcome": request.args.get("outcome"),
+            "context": request.args.get("context"),
+            "situation": request.args.get("situation"),
+        }
+        logs = load_logs()
+        for entry in logs:
+            if matches(entry, filters):
+                path = Path(config.BASE_DIR) / entry["player"] / entry["side"] / entry["filename"]
+                results.append(str(path))
+    return render_template("search.html", players=players, results=results, args=request.args)
 
 @app.route("/tag")
 def tag_form():

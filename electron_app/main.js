@@ -21,9 +21,14 @@ async function createWindow() {
   });
 
   const clipArg = process.argv[2];
-  const url = clipArg
-    ? `http://localhost:5000/tag?file=${encodeURIComponent(clipArg)}`
-    : "http://localhost:5000/tag";
+  let url = "http://localhost:5000/tag";
+  if (clipArg) {
+    if (clipArg === "--search" || clipArg === "search") {
+      url = "http://localhost:5000/search";
+    } else {
+      url = `http://localhost:5000/tag?file=${encodeURIComponent(clipArg)}`;
+    }
+  }
 
   win.loadURL(url);
 

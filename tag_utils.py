@@ -5,8 +5,6 @@ import json
 import shutil
 import logging
 from pathlib import Path
-from datetime import datetime
-import uuid
 
 import config
 
@@ -27,15 +25,20 @@ def process_clip_tags(clip_path, data):
     context = data.get("context", [""])[0]
     situation = data.get("situation", [""])[0]
 
-    # Rename file with unique suffix
+    # Rename file with incrementing numeric suffix if needed
     ext = Path(clip_path).suffix
-    unique = datetime.now().strftime("%Y%m%d%H%M%S") + "_" + uuid.uuid4().hex[:6]
-    new_name = f"{playtype}_{situation}_{outcome}_{unique}{ext}"
+    base_name = f"{playtype}_{situation}_{outcome}"
     new_dir = BASE_DIR / player / side
     try:
         new_dir.mkdir(parents=True, exist_ok=True)
-        new_path = new_dir / new_name
+        count = 0
+        candidate = new_dir / f"{base_name}{ext}"
+        while candidate.exists():
+            count += 1
+            candidate = new_dir / f"{base_name}_{count}{ext}"
+        new_path = candidate
         shutil.move(clip_path, new_path)
+        new_name = new_path.name
     except Exception as exc:
         logging.error("Failed to move clip %s -> %s: %s", clip_path, new_path, exc)
         raise

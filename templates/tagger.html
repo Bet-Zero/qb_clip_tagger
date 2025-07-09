@@ -40,6 +40,10 @@
         localStorage.setItem("lastPlayer", player);
         localStorage.setItem("lastSide", side);
         saveSelectValues();
+        const subInput = document.querySelector('input[name="subroles"]');
+        if (subInput) {
+          localStorage.setItem("lastSubroles", subInput.value);
+        }
 
         // Window will be closed by the server response
       }
@@ -84,6 +88,7 @@
           "lastContext",
           "lastOffenseRole",
           "lastDefenseRole",
+          "lastSubroles",
         ].forEach((k) => localStorage.removeItem(k));
         setSelectValues();
       }
@@ -102,6 +107,29 @@
         }
         loadPlayers();
         setSelectValues();
+
+        const savedSubs = localStorage.getItem("lastSubroles");
+        if (savedSubs) {
+          const selections = savedSubs.split(",").filter(Boolean);
+          const input = document.querySelector('input[name="subroles"]');
+          document
+            .querySelectorAll("#subroles-section .selectable")
+            .forEach((el) => {
+              if (selections.includes(el.textContent)) {
+                el.classList.add("selected");
+              }
+            });
+          if (input) input.value = savedSubs;
+        }
+
+        const subSection = document.getElementById("subroles-section");
+        if (subSection) {
+          subSection.addEventListener("click", (e) => {
+            const target = e.target.closest(".selectable");
+            if (!target) return;
+            toggleSelectLabel({ currentTarget: target });
+          });
+        }
 
         document
           .querySelector('input[name="player"]')
@@ -123,6 +151,9 @@
           ),
         ].map((el) => el.textContent);
         input.value = selected.join(",");
+        if (field === "subroles") {
+          localStorage.setItem("lastSubroles", input.value);
+        }
       }
 
       function toggleSide(event) {

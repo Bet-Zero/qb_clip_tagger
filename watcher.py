@@ -3,20 +3,26 @@ import time
 import subprocess
 from queue import Queue
 import threading
-from flask import Flask
+import logging
+from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+import config
+
 # Path setup
-WATCH_FOLDER = "/Volumes/Samsung PSSD T7/NBAFilm/_ToTag"
-DEST_FOLDER = "/Volumes/Samsung PSSD T7/NBAFilm/NBA"
+WATCH_FOLDER = config.WATCH_FOLDER
+DEST_FOLDER = config.BASE_DIR
 
 # Function to launch Electron popup synchronously
 def open_electron_popup(clip_filename):
-    electron_path = "/Volumes/Samsung PSSD T7/NBAFilm/__Tools/clip_tagger_web/electron_app"
-    command = ["npm", "start", "--prefix", electron_path, clip_filename]
+    electron_path = config.ELECTRON_DIR
+    command = ["npm", "start", "--prefix", str(electron_path), clip_filename]
     # Run and wait so localStorage is written before next clip
-    subprocess.run(command)
+    try:
+        subprocess.run(command, check=True)
+    except Exception as exc:
+        logging.error("Failed to launch Electron for %s: %s", clip_filename, exc)
 
 event_queue = Queue()
 
@@ -35,17 +41,18 @@ worker_thread.start()
 # Watchdog handler
 class ClipHandler(FileSystemEventHandler):
     def on_created(self, event):
-        if not event.is_directory and event.src_path.endswith(".mp4"):
+        if not event.is_directory and Path(event.src_path).suffix.lower() in config.VIDEO_EXTS:
             time.sleep(1)  # Give the system time to finalize write
             full_path = event.src_path
             filename = os.path.basename(full_path)
 
-            print(f"🎥 New clip detected: {filename}")
+            logging.info("🎥 New clip detected: %s", filename)
             event_queue.put(filename)
 
 # Main watcher logic
 if __name__ == "__main__":
-    print(f"✅ Watching for new clips in: {WATCH_FOLDER}")
+    logging.basicConfig(level=logging.INFO)
+    logging.info("✅ Watching for new clips in: %s", WATCH_FOLDER)
     observer = Observer()
     observer.schedule(ClipHandler(), path=WATCH_FOLDER, recursive=False)
     observer.start()
@@ -59,3 +66,5 @@ if __name__ == "__main__":
     # Stop queue worker
     event_queue.put(None)
     worker_thread.join()
+
+

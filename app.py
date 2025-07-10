@@ -1,5 +1,12 @@
 # app.py
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import (
+    Flask,
+    render_template,
+    request,
+    jsonify,
+    send_file,
+    abort,
+)
 from pathlib import Path
 import logging
 
@@ -30,6 +37,15 @@ def players():
     return jsonify({"players": get_player_names()})
 
 
+@app.route("/clip/<player>/<side>/<path:filename>")
+def serve_clip(player, side, filename):
+    """Return the video file for the given player/side/filename."""
+    path = Path(config.BASE_DIR) / player / side / filename
+    if not path.exists():
+        abort(404)
+    return send_file(path)
+
+
 @app.route("/search")
 def search_page():
     players = get_player_names()
@@ -52,10 +68,14 @@ def search_page():
             if matches(entry, filters):
                 path = Path(config.BASE_DIR) / entry["player"] / entry["side"] / entry["filename"]
                 results.append({
-                    "label": f"{entry['player']}/{entry['side']}/{entry['filename']}",
+                    "label": f"{entry['player']}: {entry['filename']}",
                     "full_path": str(path),
+                    "player": entry["player"],
+                    "side": entry["side"],
+                    "filename": entry["filename"],
                 })
     return render_template("search.html", players=players, results=results, args=request.args)
+
 
 @app.route("/tag")
 def tag_form():

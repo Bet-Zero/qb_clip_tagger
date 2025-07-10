@@ -448,3 +448,11 @@ input::placeholder,
   margin-bottom: 4px;
   word-break: break-all;
 }
+
+.results a {
+  color: #8ab4f8;
+  text-decoration: none;
+}
+.results a:hover {
+  text-decoration: underline;
+}

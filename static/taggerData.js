@@ -205,6 +205,22 @@ const situations = [
 
 const contexts = ["1Q", "2Q", "3Q", "4Q", "OT"];
 
+function toggleSelectLabel(event) {
+  const target = event.currentTarget || event.target;
+  target.classList.toggle("selected");
+  const field = target.dataset.field;
+  const input = document.querySelector(`input[name="${field}"]`);
+  const selected = [
+    ...document.querySelectorAll(
+      `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
+    ),
+  ].map((el) => el.textContent);
+  if (input) input.value = selected.join(",");
+  if (field === "subroles") {
+    localStorage.setItem("lastSubroles", input.value);
+  }
+}
+
 function createChip(text, field) {
   const chip = document.createElement("div");
   chip.className = "chip";

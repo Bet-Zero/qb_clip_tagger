@@ -28,21 +28,6 @@
           });
         });
 
-        document.querySelectorAll(".selectable, .chip").forEach((el) => {
-          el.addEventListener("click", (event) => {
-            const target = event.currentTarget;
-            target.classList.toggle("selected");
-            const field = target.dataset.field;
-            const input = document.querySelector(`input[name="${field}"]`);
-            const selected = [
-              ...document.querySelectorAll(
-                `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
-              ),
-            ].map((el) => el.textContent);
-            if (input) input.value = selected.join(",");
-          });
-        });
-
         document.querySelectorAll(".filter-input").forEach((input) => {
           input.addEventListener("input", () => {
             const box = input.closest(".tag-box");

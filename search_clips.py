@@ -38,7 +38,7 @@ def matches(entry, filters):
     return True
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Search tagged clips")
     parser.add_argument("--player")
     parser.add_argument("--side")
@@ -51,7 +51,7 @@ def main():
     parser.add_argument("--subrole", action="append", dest="subroles")
     parser.add_argument("--badge", action="append", dest="badges")
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     filters = {
         "player": args.player,

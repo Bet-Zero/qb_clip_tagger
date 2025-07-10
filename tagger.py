@@ -8,6 +8,7 @@ import socket
 tagger_dir = os.getcwd()
 watcher_path = os.path.join(tagger_dir, "watcher.py")
 
+
 # Function to wait until Flask server is ready
 def wait_for_port(host, port, timeout=10):
     start_time = time.time()
@@ -19,31 +20,36 @@ def wait_for_port(host, port, timeout=10):
             time.sleep(0.1)
     raise RuntimeError(f"❌ Timed out waiting for {host}:{port} to become available")
 
-# Start Flask server
-flask_process = subprocess.Popen(
-    ["python3", "app.py"],
-    cwd=tagger_dir
-)
+def main():
+    """Launch the Flask server and watcher together."""
 
-# Wait until Flask is actually ready
-wait_for_port("localhost", 5000)
+    flask_process = subprocess.Popen([
+        "python3",
+        "app.py",
+    ], cwd=tagger_dir)
 
-# Start watcher (which will launch Electron popups when clips appear)
-watcher_process = subprocess.Popen(
-    ["python3", watcher_path]
-)
+    wait_for_port("localhost", 5000)
 
-print("\n🚀 Tagger launched successfully.")
-print("🔁 Watching for new clips...")
-print("🛑 Press Ctrl+C to stop everything.\n")
+    watcher_process = subprocess.Popen([
+        "python3",
+        watcher_path,
+    ])
 
-try:
-    while True:
-        time.sleep(1)
-except KeyboardInterrupt:
-    print("\n🧹 Shutting down...")
-    flask_process.send_signal(signal.SIGINT)
-    watcher_process.send_signal(signal.SIGINT)
-    flask_process.wait()
-    watcher_process.wait()
-    print("✅ All processes stopped.")
+    print("\n🚀 Tagger launched successfully.")
+    print("🔁 Watching for new clips...")
+    print("🛑 Press Ctrl+C to stop everything.\n")
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n🧹 Shutting down...")
+        flask_process.send_signal(signal.SIGINT)
+        watcher_process.send_signal(signal.SIGINT)
+        flask_process.wait()
+        watcher_process.wait()
+        print("✅ All processes stopped.")
+
+
+if __name__ == "__main__":
+    main()

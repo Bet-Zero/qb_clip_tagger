@@ -15,11 +15,23 @@ This tool watches a folder for new video clips and pops up a tagging UI. Tagged 
 
 ## Running
 
-Use `python tagger.py` to start the Flask server and watcher. When new clips appear in the watch folder, the Electron UI opens for tagging.
+Launch the tagger and watcher together with the `tagger` command:
+
+```bash
+./tagger
+```
+
+When new clips appear in the watch folder, the Electron UI opens for tagging.
 
 ## Searching Clips
 
-Run `python search_clips.py` with filters such as `--player`, `--playtype`, `--trait`, etc. Multiple filters narrow the results. The script outputs paths to matching clips.
+Search using the `search` command:
+
+```bash
+./search [filters]
+```
+
+Filters such as `--player`, `--playtype`, `--trait`, etc. can be combined to narrow results. Matching clip paths are printed to stdout.
 
 ## Testing
 

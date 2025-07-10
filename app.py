@@ -51,7 +51,10 @@ def search_page():
         for entry in logs:
             if matches(entry, filters):
                 path = Path(config.BASE_DIR) / entry["player"] / entry["side"] / entry["filename"]
-                results.append(str(path))
+                results.append({
+                    "label": f"{entry['player']}/{entry['side']}/{entry['filename']}",
+                    "full_path": str(path),
+                })
     return render_template("search.html", players=players, results=results, args=request.args)
 
 @app.route("/tag")

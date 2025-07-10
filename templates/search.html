@@ -174,7 +174,7 @@
       <hr class="section-divider" />
       <ul class="results">
         {% for r in results %}
-        <li>{{ r }}</li>
+        <li title="{{ r.full_path }}">{{ r.label }}</li>
         {% endfor %}
       </ul>
       {% endif %}

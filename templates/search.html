@@ -41,6 +41,19 @@
             });
           });
         });
+        const subSection = document.getElementById("subroles-section");
+        if (subSection) {
+          subSection.addEventListener("click", (e) => {
+            const target = e.target.closest(".selectable");
+            if (!target) return;
+            toggleSelectLabel({ currentTarget: target });
+          });
+
+          const hidden = document.querySelector('input[name="subroles"]');
+          if (hidden && hidden.value) {
+            subSection.closest("details").setAttribute("open", "");
+          }
+        }
       });
     </script>
   </head>

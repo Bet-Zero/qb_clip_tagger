@@ -174,13 +174,16 @@
       <hr class="section-divider" />
       <ul class="results">
         {% for r in results %}
-        <li title="{{ r.full_path }}">
+        <li>
           <a
             href="{{ url_for('serve_clip', player=r.player, side=r.side, filename=r.filename) }}"
             target="_blank"
           >
             {{ r.label }}
           </a>
+          <button class="copy-btn" onclick="copyPath('{{ r.full_path }}')">
+            Copy Path
+          </button>
         </li>
         {% endfor %}
       </ul>

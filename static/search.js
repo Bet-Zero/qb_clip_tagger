@@ -45,3 +45,9 @@ function populateSearch() {
 }
 
 window.addEventListener("DOMContentLoaded", populateSearch);
+
+function copyPath(path) {
+  navigator.clipboard
+    .writeText(path)
+    .catch((err) => console.error("Failed to copy", err));
+}

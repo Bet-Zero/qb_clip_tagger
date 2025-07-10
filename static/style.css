@@ -456,3 +456,17 @@ input::placeholder,
 .results a:hover {
   text-decoration: underline;
 }
+
+.copy-btn {
+  margin-left: 0.3rem;
+  background: #444;
+  border: none;
+  color: #eee;
+  padding: 0 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+.copy-btn:hover {
+  background: #555;
+}

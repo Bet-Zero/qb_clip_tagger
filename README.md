@@ -15,20 +15,20 @@ This tool watches a folder for new video clips and pops up a tagging UI. Tagged 
 
 ## Running
 
-Launch the tagger and watcher together with the `tagger` command:
+Launch the tagger and watcher together with the `nba tagger` command:
 
 ```bash
-./tagger
+nba tagger
 ```
 
 When new clips appear in the watch folder, the Electron UI opens for tagging.
 
 ## Searching Clips
 
-Search using the `search` command:
+Search using the `nba search` command:
 
 ```bash
-./search [filters]
+nba search [filters]
 ```
 
 Filters such as `--player`, `--playtype`, `--trait`, etc. can be combined to narrow results. Matching clip paths are printed to stdout.

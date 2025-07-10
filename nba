@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+import sys
+import os
+import subprocess
+import socket
+import time
+
+# Set the path to your project directory
+PROJECT_DIR = "/Volumes/Samsung PSSD T7/NBAFilm/__Tools/clip_tagger_web"
+sys.path.insert(0, PROJECT_DIR)
+os.chdir(PROJECT_DIR)  # Ensure relative paths work
+
+USAGE = "nba [tagger|search] [options]"
+
+def is_port_in_use(port):
+    """Check if a port is active."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+def wait_for_port(port, timeout=5):
+    """Wait until the given port is available or timeout expires."""
+    start = time.time()
+    while time.time() - start < timeout:
+        if is_port_in_use(port):
+            return True
+        time.sleep(0.2)
+    return False
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    if not argv:
+        print(f"Usage: {USAGE}")
+        return 1
+
+    cmd, *rest = argv
+
+    if cmd == "tagger":
+        from tagger import main as tagger_main
+        return tagger_main()
+
+    elif cmd == "search":
+        # Step 1: Start Flask server if not already running
+        if not is_port_in_use(5000):
+            subprocess.Popen(
+                ["python3", "app.py"],
+                cwd=PROJECT_DIR,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            wait_for_port(5000, timeout=5)
+
+        # Step 2: Launch Electron window for /search
+        electron_path = os.path.join(PROJECT_DIR, "node_modules", ".bin", "electron")
+        electron_main = os.path.join("electron_app", "main.js")
+
+        subprocess.Popen(
+            [electron_path, electron_main, "search"],
+            cwd=PROJECT_DIR
+        )
+
+        return 0
+
+    else:
+        print(f"Unknown command: {cmd}\nUsage: {USAGE}")
+        return 1
+
+if __name__ == "__main__":
+    raise SystemExit(main())

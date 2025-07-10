@@ -36,6 +36,9 @@ def get_player_names():
         for entry in base.iterdir():
             if entry.is_dir() and not entry.name.startswith("_") and not entry.name.startswith("."):
                 names.append(entry.name)
+
+    # Return names in alphabetical order for nicer suggestions
+    names.sort(key=lambda n: n.lower())
     return names
 
 @app.route("/players")

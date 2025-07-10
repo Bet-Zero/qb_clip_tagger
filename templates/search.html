@@ -4,42 +4,62 @@
     <meta charset="UTF-8" />
     <title>Search Clips</title>
     <link rel="stylesheet" href="/static/style.css" />
+    <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
+    <script src="{{ url_for('static', filename='playerSuggest.js') }}"></script>
     <script>
-      function toggleSide(event) {
-        document
-          .querySelectorAll(".toggle-button")
-          .forEach((btn) => btn.classList.remove("selected"));
-        const btn = event.currentTarget;
-        btn.classList.add("selected");
-        document.querySelector('input[name="side"]').value = btn.dataset.value;
-      }
+      window.addEventListener("DOMContentLoaded", () => {
+        const playerNames = JSON.parse(
+          document.getElementById("player-data").textContent
+        );
 
-      function toggleSelectLabel(event) {
-        const target = event.currentTarget || event.target;
-        target.classList.toggle("selected");
-        const field = target.dataset.field;
-        const input = document.querySelector(`input[name="${field}"]`);
-        const selected = [
-          ...document.querySelectorAll(
-            `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
-          ),
-        ].map((el) => el.textContent);
-        if (input) input.value = selected.join(",");
-      }
+        enablePlayerSuggestions(
+          document.querySelector('input[name="player"]'),
+          playerNames
+        );
 
-      function filterList(input) {
-        const box = input.closest(".tag-box");
-        const container = box.querySelector(".tag-list");
-        const query = input.value.toLowerCase();
-        const tags = container.querySelectorAll(".selectable");
-
-        tags.forEach((tag) => {
-          const text = tag.textContent.toLowerCase();
-          tag.style.display = text.includes(query) ? "block" : "none";
+        document.querySelectorAll(".toggle-button").forEach((btn) => {
+          btn.addEventListener("click", (event) => {
+            document
+              .querySelectorAll(".toggle-button")
+              .forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            document.querySelector('input[name="side"]').value =
+              btn.dataset.value;
+          });
         });
-      }
+
+        document.querySelectorAll(".selectable, .chip").forEach((el) => {
+          el.addEventListener("click", (event) => {
+            const target = event.currentTarget;
+            target.classList.toggle("selected");
+            const field = target.dataset.field;
+            const input = document.querySelector(`input[name="${field}"]`);
+            const selected = [
+              ...document.querySelectorAll(
+                `.selectable[data-field="${field}"].selected, .chip[data-field="${field}"].selected`
+              ),
+            ].map((el) => el.textContent);
+            if (input) input.value = selected.join(",");
+          });
+        });
+
+        document.querySelectorAll(".filter-input").forEach((input) => {
+          input.addEventListener("input", () => {
+            const box = input.closest(".tag-box");
+            const container = box.querySelector(".tag-list");
+            const query = input.value.toLowerCase();
+            const tags = container.querySelectorAll(".selectable");
+
+            tags.forEach((tag) => {
+              const text = tag.textContent.toLowerCase();
+              tag.style.display = text.includes(query) ? "block" : "none";
+            });
+          });
+        });
+      });
     </script>
   </head>
+
   <body>
     <div class="container">
       <h1>Search Clips</h1>
@@ -60,14 +80,12 @@
             <div
               class="toggle-button {% if args.get('side','Offense')=='Offense' %}selected{% endif %}"
               data-value="Offense"
-              onclick="toggleSide(event)"
             >
               Offense
             </div>
             <div
               class="toggle-button {% if args.get('side')=='Defense' %}selected{% endif %}"
               data-value="Defense"
-              onclick="toggleSide(event)"
             >
               Defense
             </div>
@@ -78,6 +96,7 @@
             value="{{ args.get('side','Offense') }}"
           />
         </div>
+
         <div class="form-row">
           <select name="playtype"></select>
           <select name="situation"></select>
@@ -86,6 +105,7 @@
           <select name="outcome"></select>
           <select name="context"></select>
         </div>
+
         <hr class="section-divider" />
 
         <div class="form-group">
@@ -127,7 +147,6 @@
                       type="text"
                       class="filter-input"
                       placeholder="Search..."
-                      oninput="filterList(this)"
                     />
                   </div>
                   <div class="tag-list scrollable" data-filter-group></div>
@@ -141,7 +160,6 @@
                       type="text"
                       class="filter-input"
                       placeholder="Search..."
-                      oninput="filterList(this)"
                     />
                   </div>
                   <div class="tag-list scrollable" data-filter-group></div>
@@ -170,6 +188,7 @@
 
         <button type="submit">🔍 Search</button>
       </form>
+
       {% if results %}
       <hr class="section-divider" />
       <button class="copy-btn" onclick="showListInFinder()">
@@ -192,7 +211,12 @@
       </ul>
       {% endif %}
     </div>
+
+    <!-- Safely inject players JSON -->
+    <script id="player-data" type="application/json">
+      {{ players | tojson }}
+    </script>
+
+    <script src="/static/search.js"></script>
   </body>
-  <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
-  <script src="/static/search.js"></script>
 </html>

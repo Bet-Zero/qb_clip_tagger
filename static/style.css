@@ -59,6 +59,36 @@ form {
   flex-basis: 180px;
 }
 
+/* Scrollable suggestion list for player datalists */
+datalist#player-list {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Custom scrollable suggestions dropdown */
+.player-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 2px;
+  background: #2c2c2e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.player-suggestions div {
+  padding: 0.25rem 0.4rem;
+  cursor: pointer;
+}
+
+.player-suggestions div:hover {
+  background: #444;
+}
+
 /* Ensure dropdowns expand to fill the available row width */
 .form-row select {
   max-width: none;

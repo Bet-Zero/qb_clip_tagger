@@ -59,6 +59,10 @@
             opt.value = p;
             list.appendChild(opt);
           });
+          enablePlayerSuggestions(
+            document.querySelector('input[name="player"]'),
+            data.players
+          );
         } catch (e) {
           console.error("Failed to load players", e);
         }
@@ -299,5 +303,6 @@
 
     <!-- Inject tag data -->
     <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
+    <script src="{{ url_for('static', filename='playerSuggest.js') }}"></script>
   </body>
 </html>

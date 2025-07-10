@@ -172,24 +172,25 @@
       </form>
       {% if results %}
       <hr class="section-divider" />
-      <ul class="results">
+      <button class="copy-btn" onclick="showListInFinder()">
+        Show List in Finder
+      </button>
+      <ul class="results" id="results-list">
         {% for r in results %}
-        <li>
+        <li data-path="{{ r.full_path }}">
           <a
             href="{{ url_for('serve_clip', player=r.player, side=r.side, filename=r.filename) }}"
             target="_blank"
           >
             {{ r.label }}
           </a>
-          <button class="copy-btn" onclick="copyPath('{{ r.full_path }}')">
-            Copy Path
+          <button class="copy-btn" onclick="showInFinder('{{ r.full_path }}')">
+            Show in Finder
           </button>
         </li>
         {% endfor %}
       </ul>
       {% endif %}
     </div>
-    <script src="{{ url_for('static', filename='taggerData.js') }}"></script>
-    <script src="{{ url_for('static', filename='search.js') }}"></script>
   </body>
 </html>

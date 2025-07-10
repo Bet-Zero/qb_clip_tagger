@@ -9,6 +9,13 @@ from flask import (
 )
 from pathlib import Path
 import logging
+import os
+import sys
+import subprocess
+import tempfile
+import shutil
+import threading
+import time
 
 import config
 from tag_utils import process_clip_tags
@@ -30,7 +37,6 @@ def get_player_names():
             if entry.is_dir() and not entry.name.startswith("_") and not entry.name.startswith("."):
                 names.append(entry.name)
     return names
-
 
 @app.route("/players")
 def players():
@@ -75,6 +81,65 @@ def search_page():
                     "filename": entry["filename"],
                 })
     return render_template("search.html", players=players, results=results, args=request.args)
+
+
+def reveal_in_finder(path):
+    if sys.platform.startswith("darwin"):
+        subprocess.run(["open", "-R", path])
+    elif os.name == "nt":
+        subprocess.run(["explorer", "/select,", path])
+    else:
+        subprocess.run(["xdg-open", os.path.dirname(path)])
+
+
+@app.route("/reveal", methods=["POST"])
+def reveal():
+    data = request.get_json()
+    path = data.get("path") if data else None
+    if not path:
+        return jsonify({"error": "no path"}), 400
+    try:
+        reveal_in_finder(path)
+    except Exception as exc:
+        logging.error("Failed to reveal %s: %s", path, exc)
+        return jsonify({"error": "failed"}), 500
+    return jsonify({"status": "ok"})
+
+
+def schedule_cleanup(dir_path):
+    def _cleanup():
+        time.sleep(20)
+        shutil.rmtree(dir_path, ignore_errors=True)
+
+    threading.Thread(target=_cleanup, daemon=True).start()
+
+
+@app.route("/reveal_list", methods=["POST"])
+def reveal_list():
+    data = request.get_json()
+    paths = data.get("paths") if data else None
+    if not paths:
+        return jsonify({"error": "no paths"}), 400
+    try:
+        tmpdir = tempfile.mkdtemp(prefix="clip_list_")
+        for p in paths:
+            name = os.path.basename(p)
+            dest = os.path.join(tmpdir, name)
+            try:
+                os.symlink(p, dest)
+            except Exception:
+                shutil.copy(p, dest)
+        if sys.platform.startswith("darwin"):
+            subprocess.run(["open", tmpdir])
+        elif os.name == "nt":
+            subprocess.run(["explorer", tmpdir])
+        else:
+            subprocess.run(["xdg-open", tmpdir])
+        schedule_cleanup(tmpdir)
+    except Exception as exc:
+        logging.error("Failed to reveal list: %s", exc)
+        return jsonify({"error": "failed"}), 500
+    return jsonify({"status": "ok"})
 
 
 @app.route("/tag")

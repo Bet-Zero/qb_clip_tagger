@@ -46,8 +46,21 @@ function populateSearch() {
 
 window.addEventListener("DOMContentLoaded", populateSearch);
 
-function copyPath(path) {
-  navigator.clipboard
-    .writeText(path)
-    .catch((err) => console.error("Failed to copy", err));
+function showInFinder(path) {
+  fetch("/reveal", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path }),
+  }).catch((err) => console.error("Failed to reveal", err));
+}
+
+function showListInFinder() {
+  const paths = [...document.querySelectorAll("#results-list li")].map(
+    (li) => li.dataset.path
+  );
+  fetch("/reveal_list", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ paths }),
+  }).catch((err) => console.error("Failed to reveal list", err));
 }

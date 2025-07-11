@@ -26,7 +26,7 @@ form {
   display: flex;
   gap: 0.35rem;
 }
-.form-row input,
+.form-row input:not([type="hidden"]),
 .form-row select {
   flex: 1;
   padding: 0.3rem;
@@ -38,7 +38,7 @@ form {
 }
 
 /* Maintain styles when inputs/selects are focused */
-.form-row input:focus,
+.form-row input:not([type="hidden"]):focus,
 .form-row select:focus,
 .role-select:focus {
   background: #2c2c2e;
@@ -48,7 +48,7 @@ form {
 }
 
 /* Prevent browser autofill from altering styles */
-.form-row input:-webkit-autofill,
+.form-row input:not([type="hidden"]):-webkit-autofill,
 .form-row select:-webkit-autofill {
   box-shadow: 0 0 0px 1000px #2c2c2e inset;
   -webkit-text-fill-color: #f1f1f1;
@@ -121,6 +121,17 @@ button[type="submit"]:hover {
   display: flex;
   gap: 0.3rem;
 }
+
+/* Center and size the good/bad quality toggle */
+.quality-group {
+  justify-content: center;
+  margin: 0 auto;
+}
+.quality-group .toggle-button {
+  flex: 0 0 auto;
+  min-width: 4rem;
+}
+
 .toggle-button {
   flex: 1;
   text-align: center;
@@ -464,7 +475,7 @@ input::placeholder,
 .section-divider {
   border: none;
   border-top: 1px solid #333;
-  margin: 0.75rem 0;
+  margin: 0.1rem 0;
 }
 
 /* Simple search results styling */

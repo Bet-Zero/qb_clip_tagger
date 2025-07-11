@@ -39,7 +39,7 @@
             .value || "Offense";
         const quality =
           document.querySelector(".quality-group .toggle-button.selected")
-            ?.dataset.value || "Good";
+            ?.dataset.value || "";
         localStorage.setItem("lastPlayer", player);
         localStorage.setItem("lastSide", side);
         localStorage.setItem("lastQuality", quality);
@@ -195,12 +195,18 @@
       }
 
       function toggleQuality(event) {
+        const btn = event.currentTarget || event.target;
+        const wasSelected = btn.classList.contains("selected");
         document
           .querySelectorAll(".quality-group .toggle-button")
-          .forEach((btn) => btn.classList.remove("selected"));
-        event.target.classList.add("selected");
-        document.querySelector('input[name="quality"]').value =
-          event.target.dataset.value;
+          .forEach((b) => b.classList.remove("selected"));
+        const hidden = document.querySelector('input[name="quality"]');
+        if (wasSelected) {
+          if (hidden) hidden.value = "";
+        } else {
+          btn.classList.add("selected");
+          if (hidden) hidden.value = btn.dataset.value;
+        }
       }
 
       function filterList(input) {
@@ -248,10 +254,22 @@
           <input type="hidden" name="side" value="Offense" />
         </div>
 
+        <hr class="section-divider" />
+
+        <div class="form-row">
+          <select name="playtype"></select>
+          <select name="situation"></select>
+        </div>
+
+        <div class="form-row">
+          <select name="outcome"></select>
+          <select name="context"></select>
+        </div>
+
         <div class="form-row">
           <div class="toggle-group quality-group">
             <div
-              class="toggle-button selected"
+              class="toggle-button"
               data-value="Good"
               onclick="toggleQuality(event)"
             >
@@ -265,19 +283,7 @@
               Bad
             </div>
           </div>
-          <input type="hidden" name="quality" value="Good" />
-        </div>
-
-        <hr class="section-divider" />
-
-        <div class="form-row">
-          <select name="playtype"></select>
-          <select name="situation"></select>
-        </div>
-
-        <div class="form-row">
-          <select name="outcome"></select>
-          <select name="context"></select>
+          <input type="hidden" name="quality" value="" />
         </div>
 
         <hr class="section-divider" />

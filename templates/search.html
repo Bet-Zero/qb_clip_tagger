@@ -34,12 +34,17 @@
           .querySelectorAll(".quality-group .toggle-button")
           .forEach((btn) => {
             btn.addEventListener("click", () => {
+              const wasSelected = btn.classList.contains("selected");
               document
                 .querySelectorAll(".quality-group .toggle-button")
                 .forEach((b) => b.classList.remove("selected"));
-              btn.classList.add("selected");
-              document.querySelector('input[name="quality"]').value =
-                btn.dataset.value;
+              const hidden = document.querySelector('input[name="quality"]');
+              if (wasSelected) {
+                if (hidden) hidden.value = "";
+              } else {
+                btn.classList.add("selected");
+                if (hidden) hidden.value = btn.dataset.value;
+              }
             });
           });
 
@@ -111,9 +116,18 @@
         </div>
 
         <div class="form-row">
+          <select name="playtype"></select>
+          <select name="situation"></select>
+        </div>
+        <div class="form-row">
+          <select name="outcome"></select>
+          <select name="context"></select>
+        </div>
+
+        <div class="form-row">
           <div class="toggle-group quality-group">
             <div
-              class="toggle-button {% if args.get('quality','Good')=='Good' %}selected{% endif %}"
+              class="toggle-button {% if args.get('quality')=='Good' %}selected{% endif %}"
               data-value="Good"
             >
               Good
@@ -128,17 +142,8 @@
           <input
             type="hidden"
             name="quality"
-            value="{{ args.get('quality','Good') }}"
+            value="{{ args.get('quality','') }}"
           />
-        </div>
-
-        <div class="form-row">
-          <select name="playtype"></select>
-          <select name="situation"></select>
-        </div>
-        <div class="form-row">
-          <select name="outcome"></select>
-          <select name="context"></select>
         </div>
 
         <hr class="section-divider" />

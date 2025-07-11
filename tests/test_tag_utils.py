@@ -27,14 +27,14 @@ def test_process_clip_tags(monkeypatch, tmp_path):
     data = {
         "player": ["Jordan"],
         "side": ["Offense"],
-        "playtype": ["Dunk"],
+        "playtype": ["dunk"],
         "outcome": ["Make"],
         "traits": [],
         "roles": [],
         "subroles": [],
         "badges": [],
         "context": [""],
-        "situation": ["Isolation"],
+        "situation": ["iso"],
         "quality": ["Good"],
     }
 
@@ -44,7 +44,7 @@ def test_process_clip_tags(monkeypatch, tmp_path):
     files = list(player_dir.iterdir())
     assert len(files) == 1
     saved = files[0]
-    assert saved.name == "Dunk_Isolation_Make.mp4"
+    assert saved.name == "dunk_iso_Make.mp4"
     log_path = base / "Jordan" / "tag_log.json"
     with open(log_path) as f:
         log = json.load(f)
@@ -71,14 +71,14 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
     data = {
         "player": ["Jordan"],
         "side": ["Offense"],
-        "playtype": ["Dunk"],
+        "playtype": ["dunk"],
         "outcome": ["Make"],
         "traits": [],
         "roles": [],
         "subroles": [],
         "badges": [],
         "context": [""],
-        "situation": ["Isolation"],
+        "situation": ["iso"],
         "quality": ["Good"],
     }
 
@@ -87,4 +87,4 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
 
     player_dir = base / "Jordan" / "Offense"
     names = sorted(p.name for p in player_dir.iterdir())
-    assert names == ["Dunk_Isolation_Make.mp4", "Dunk_Isolation_Make_1.mp4"]
+    assert names == ["dunk_iso_Make.mp4", "dunk_iso_Make_1.mp4"]

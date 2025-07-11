@@ -142,37 +142,28 @@ const badges = [
 ];
 
 const playTypes = [
-  "Spot-Up Jumper",
-  "Catch & Drive",
-  "Pump Fake Drive",
-  "Spin Move",
-  "Eurostep",
-  "Stepback Jumper",
-  "Pull-Up Jumper",
-  "Layup",
-  "Dunk",
-  "Hook Shot",
-  "Kickout Pass",
-  "Dump-Off",
-  "Entry Pass",
-  "Skip Pass",
-  "Touch Pass",
-  "Closeout",
-  "Recovery Contest",
-  "Tag & Recover",
-  "Late Rotation",
-  "Isolation",
-  "Pick & Roll Ball Handler",
-  "Pick & Roll Roll Catch",
-  "Pick & Roll Pop",
-  "Off-Screen Action",
-  "Transition",
-  "Scramble Rotation",
-  "Post Entry",
-  "Rebound Putback",
-  "Kickout Attack",
-  "Handoff Action",
-  "Inbound Play",
+  { label: "Spot-Up Jumper", value: "spotup-jumper" },
+  { label: "Catch & Drive", value: "catch-drive" },
+  { label: "Pump Fake Drive", value: "pumpfake-drive" },
+  { label: "Spin Move", value: "spin-move" },
+  { label: "Eurostep", value: "eurostep" },
+  { label: "Stepback Jumper", value: "stepback-jumper" },
+  { label: "Pull-Up Jumper", value: "pullup-jumper" },
+  { label: "Layup", value: "layup" },
+  { label: "Dunk", value: "dunk" },
+  { label: "Hook Shot", value: "hook-shot" },
+  { label: "Kickout Pass", value: "kickout-pass" },
+  { label: "Dump-Off", value: "dumpoff" },
+  { label: "Entry Pass", value: "entry-pass" },
+  { label: "Skip Pass", value: "skip-pass" },
+  { label: "Touch Pass", value: "touch-pass" },
+  { label: "Closeout", value: "closeout" },
+  { label: "Recovery Contest", value: "recovery-contest" },
+  { label: "Tag & Recover", value: "tag-recover" },
+  { label: "Late Rotation", value: "late-rotation" },
+  { label: "Rebound Putback", value: "putback" },
+  { label: "Kickout Attack", value: "kickout-attack" },
+  { label: "Handoff Action", value: "handoff" },
 ];
 
 const outcomes = [
@@ -191,16 +182,15 @@ const outcomes = [
 ];
 
 const situations = [
-  "Isolation",
-  "Pick & Roll Ball Handler",
-  "Pick & Roll Roll Catch",
-  "Pick & Roll Pop",
-  "Off-Screen Action",
-  "Transition",
-  "Scramble Rotation",
-  "Post Entry",
-  "Rebound Putback",
-  "Inbound Play",
+  { label: "Isolation", value: "iso" },
+  { label: "Pick & Roll Ball Handler", value: "pnr-handler" },
+  { label: "Pick & Roll Roll Catch", value: "pnr-roll" },
+  { label: "Pick & Roll Pop", value: "pnr-pop" },
+  { label: "Off-Screen Action", value: "offscreen" },
+  { label: "Transition", value: "transition" },
+  { label: "Scramble Rotation", value: "scramble" },
+  { label: "Post Entry", value: "post-entry" },
+  { label: "Inbound Play", value: "inbound-play" },
 ];
 
 const contexts = ["1Q", "2Q", "3Q", "4Q", "OT"];
@@ -261,8 +251,8 @@ function populateTags() {
   const playPlaceholder = new Option("Play Type", "");
   playPlaceholder.className = "placeholder-option";
   playSelect.add(playPlaceholder);
-  playTypes.forEach((opt) => {
-    const option = new Option(opt, opt);
+  playTypes.forEach(({ label, value }) => {
+    const option = new Option(label, value);
     playSelect.add(option);
   });
 
@@ -280,8 +270,8 @@ function populateTags() {
   const situationPlaceholder = new Option("Situation", "");
   situationPlaceholder.className = "placeholder-option";
   situationSelect.add(situationPlaceholder);
-  situations.forEach((opt) => {
-    const option = new Option(opt, opt);
+  situations.forEach(({ label, value }) => {
+    const option = new Option(label, value);
     situationSelect.add(option);
   });
 

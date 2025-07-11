@@ -52,7 +52,10 @@ class ClipHandler(FileSystemEventHandler):
 # Main watcher logic
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    logging.info("✅ Watching for new clips in: %s", WATCH_FOLDER)
+    print("\n\033[1;34m🟢 Tagger is now watching for new clips...\033[0m")
+    print(f"\033[1;37m📂 Folder:\033[0m {WATCH_FOLDER}")
+    print("\033[2;37m(Press Ctrl+C to stop watching)\033[0m\n")
+
     observer = Observer()
     observer.schedule(ClipHandler(), path=WATCH_FOLDER, recursive=False)
     observer.start()

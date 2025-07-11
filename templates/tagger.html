@@ -35,8 +35,15 @@
       function closeAfterSubmit() {
         const player = document.querySelector('input[name="player"]').value;
         const side =
-          document.querySelector(".toggle-button.selected")?.dataset.value ||
-          "Offense";
+          document.querySelector(".side-group .toggle-button.selected")?.dataset
+            .value || "Offense";
+        const quality =
+          document.querySelector(".quality-group .toggle-button.selected")
+            ?.dataset.value || "Good";
+        localStorage.setItem("lastPlayer", player);
+        localStorage.setItem("lastSide", side);
+        localStorage.setItem("lastQuality", quality);
+        ("Offense");
         localStorage.setItem("lastPlayer", player);
         localStorage.setItem("lastSide", side);
         saveSelectValues();
@@ -101,13 +108,28 @@
         const lastPlayer = localStorage.getItem("lastPlayer");
         const lastSide = localStorage.getItem("lastSide");
 
+        const lastQuality = localStorage.getItem("lastQuality");
+
         if (lastPlayer)
           document.querySelector('input[name="player"]').value = lastPlayer;
         if (lastSide) {
-          document.querySelectorAll(".toggle-button").forEach((btn) => {
-            btn.classList.toggle("selected", btn.dataset.value === lastSide);
-          });
+          document
+            .querySelectorAll(".side-group .toggle-button")
+            .forEach((btn) => {
+              btn.classList.toggle("selected", btn.dataset.value === lastSide);
+            });
           document.querySelector('input[name="side"]').value = lastSide;
+        }
+        if (lastQuality) {
+          document
+            .querySelectorAll(".quality-group .toggle-button")
+            .forEach((btn) => {
+              btn.classList.toggle(
+                "selected",
+                btn.dataset.value === lastQuality
+              );
+            });
+          document.querySelector('input[name="quality"]').value = lastQuality;
         }
         loadPlayers();
         setSelectValues();
@@ -162,7 +184,7 @@
 
       function toggleSide(event) {
         document
-          .querySelectorAll(".toggle-button")
+          .querySelectorAll(".side-group .toggle-button")
           .forEach((btn) => btn.classList.remove("selected"));
         event.target.classList.add("selected");
         document.querySelector('input[name="side"]').value =
@@ -170,6 +192,15 @@
         if (event.target.dataset.value !== localStorage.getItem("lastSide")) {
           clearSavedSelections();
         }
+      }
+
+      function toggleQuality(event) {
+        document
+          .querySelectorAll(".quality-group .toggle-button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        event.target.classList.add("selected");
+        document.querySelector('input[name="quality"]').value =
+          event.target.dataset.value;
       }
 
       function filterList(input) {
@@ -198,7 +229,7 @@
             list="player-list"
           />
           <datalist id="player-list"></datalist>
-          <div class="toggle-group">
+          <div class="toggle-group side-group">
             <div
               class="toggle-button selected"
               data-value="Offense"
@@ -215,6 +246,26 @@
             </div>
           </div>
           <input type="hidden" name="side" value="Offense" />
+        </div>
+
+        <div class="form-row">
+          <div class="toggle-group quality-group">
+            <div
+              class="toggle-button selected"
+              data-value="Good"
+              onclick="toggleQuality(event)"
+            >
+              Good
+            </div>
+            <div
+              class="toggle-button"
+              data-value="Bad"
+              onclick="toggleQuality(event)"
+            >
+              Bad
+            </div>
+          </div>
+          <input type="hidden" name="quality" value="Good" />
         </div>
 
         <hr class="section-divider" />

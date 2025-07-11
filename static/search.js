@@ -13,6 +13,17 @@ function populateSearch() {
   const contextSelect = document.querySelector("select[name='context']");
   if (contextSelect) contextSelect.value = params.get("context") || "";
 
+  const qualityVal = params.get("quality");
+  if (qualityVal) {
+    document
+      .querySelectorAll(".quality-group .toggle-button")
+      .forEach((btn) => {
+        btn.classList.toggle("selected", btn.dataset.value === qualityVal);
+      });
+    const hidden = document.querySelector("input[name='quality']");
+    if (hidden) hidden.value = qualityVal;
+  }
+
   // Roles (offense/defense selects)
   const rolesVal = params.get("roles");
   if (rolesVal) {

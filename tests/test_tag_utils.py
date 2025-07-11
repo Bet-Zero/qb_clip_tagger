@@ -35,6 +35,7 @@ def test_process_clip_tags(monkeypatch, tmp_path):
         "badges": [],
         "context": [""],
         "situation": ["Isolation"],
+        "quality": ["Good"],
     }
 
     tag_utils.process_clip_tags(str(clip_path), data)
@@ -78,6 +79,7 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
         "badges": [],
         "context": [""],
         "situation": ["Isolation"],
+        "quality": ["Good"],
     }
 
     tag_utils.process_clip_tags(str(clip1), data)

@@ -17,16 +17,31 @@
           playerNames
         );
 
-        document.querySelectorAll(".toggle-button").forEach((btn) => {
-          btn.addEventListener("click", (event) => {
-            document
-              .querySelectorAll(".toggle-button")
-              .forEach((b) => b.classList.remove("selected"));
-            btn.classList.add("selected");
-            document.querySelector('input[name="side"]').value =
-              btn.dataset.value;
+        document
+          .querySelectorAll(".side-group .toggle-button")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              document
+                .querySelectorAll(".side-group .toggle-button")
+                .forEach((b) => b.classList.remove("selected"));
+              btn.classList.add("selected");
+              document.querySelector('input[name="side"]').value =
+                btn.dataset.value;
+            });
           });
-        });
+
+        document
+          .querySelectorAll(".quality-group .toggle-button")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              document
+                .querySelectorAll(".quality-group .toggle-button")
+                .forEach((b) => b.classList.remove("selected"));
+              btn.classList.add("selected");
+              document.querySelector('input[name="quality"]').value =
+                btn.dataset.value;
+            });
+          });
 
         document.querySelectorAll(".filter-input").forEach((input) => {
           input.addEventListener("input", () => {
@@ -92,6 +107,28 @@
             type="hidden"
             name="side"
             value="{{ args.get('side','Offense') }}"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="toggle-group quality-group">
+            <div
+              class="toggle-button {% if args.get('quality','Good')=='Good' %}selected{% endif %}"
+              data-value="Good"
+            >
+              Good
+            </div>
+            <div
+              class="toggle-button {% if args.get('quality')=='Bad' %}selected{% endif %}"
+              data-value="Bad"
+            >
+              Bad
+            </div>
+          </div>
+          <input
+            type="hidden"
+            name="quality"
+            value="{{ args.get('quality','Good') }}"
           />
         </div>
 

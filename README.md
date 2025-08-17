@@ -11,7 +11,7 @@ This tool watches a folder for new video clips and pops up a tagging UI. Tagged 
 2. (Optional) Adjust paths by setting environment variables:
    - `NFL_BASE_DIR` – base directory containing quarterback folders (default is `/Volumes/Samsung PSSD T7/NFLFilm`)
    - `NFL_WATCH_FOLDER` – folder where new clips appear (default is `<BASE_DIR>/_ToTag`)
-   - `NFL_ELECTRON_DIR` – location of the Electron popup (default is `<BASE_DIR>/__Tools/clip_tagger_web/electron_app`)
+   - `NFL_ELECTRON_DIR` – location of the Electron popup (default is `<BASE_DIR>/__Tools/qb_clip_tagger/electron_app`)
 
 ## Running
 

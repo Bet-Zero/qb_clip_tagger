@@ -1,6 +1,6 @@
 # Agent Contribution Guidelines
 
-This repository manages an NBA clip tagging tool built with Python, Flask, and an Electron popup interface.
+This repository manages an QB clip tagging tool built with Python, Flask, and an Electron popup interface.
 
 ## Setup
 

@@ -17,14 +17,8 @@
           playerNames
         );
 
-        // Add click handlers for traits and badges
-        document
-          .querySelectorAll(
-            '.chip-row[data-field="traits"] .chip, .chip-row[data-field="badges"] .chip'
-          )
-          .forEach((chip) => {
-            chip.addEventListener("click", toggleSelectLabel);
-          });
+        // Add click handlers for traits and badges after they are created
+        // This will be done after populateTags() runs in taggerData.js
 
         document
           .querySelectorAll(".side-group .toggle-button")

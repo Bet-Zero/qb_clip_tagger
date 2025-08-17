@@ -68,11 +68,19 @@ function populateSearch() {
   ["traits", "badges", "subroles"].forEach(setTagSelections);
 }
 
-// Make sure populateTags from taggerData.js runs first
+// populateTags is already called by taggerData.js, just run populateSearch
 window.addEventListener("DOMContentLoaded", () => {
-  if (typeof populateTags === "function") {
-    populateTags();
-  }
+  // Add click handlers for traits and badges chips after they're created
+  setTimeout(() => {
+    document
+      .querySelectorAll(
+        '.chip-row[data-field="traits"] .chip, .chip-row[data-field="badges"] .chip'
+      )
+      .forEach((chip) => {
+        chip.addEventListener("click", toggleSelectLabel);
+      });
+  }, 0); // Run after current execution context
+  
   populateSearch();
 });
 

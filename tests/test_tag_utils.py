@@ -9,9 +9,9 @@ import pytest
 
 
 def test_process_clip_tags(monkeypatch, tmp_path):
-    base = tmp_path / "NBAFilm"
+    base = tmp_path / "NFLFilm"
     base.mkdir()
-    monkeypatch.setenv("NBA_BASE_DIR", str(base))
+    monkeypatch.setenv("NFL_BASE_DIR", str(base))
     monkeypatch.syspath_prepend(os.getcwd())
     # reload modules with new env
     config = importlib.import_module("config")
@@ -25,36 +25,36 @@ def test_process_clip_tags(monkeypatch, tmp_path):
     clip_path.write_text("data")
 
     data = {
-        "player": ["Jordan"],
+        "player": ["Mahomes"],
         "side": ["Offense"],
-        "playtype": ["dunk"],
-        "outcome": ["Make"],
+        "playtype": ["dropback-pass"],
+        "outcome": ["Completion"],
         "traits": [],
         "roles": [],
         "subroles": [],
         "badges": [],
         "context": [""],
-        "situation": ["iso"],
+        "situation": ["clean-pocket"],
         "quality": ["Good"],
     }
 
     tag_utils.process_clip_tags(str(clip_path), data)
 
-    player_dir = base / "Jordan" / "Offense"
+    player_dir = base / "Mahomes" / "Offense"
     files = list(player_dir.iterdir())
     assert len(files) == 1
     saved = files[0]
-    assert saved.name == "dunk_iso_Make.mp4"
-    log_path = base / "Jordan" / "tag_log.json"
+    assert saved.name == "dropback-pass_clean-pocket_Completion.mp4"
+    log_path = base / "Mahomes" / "tag_log.json"
     with open(log_path) as f:
         log = json.load(f)
     assert log[0]["filename"] == saved.name
 
 
 def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
-    base = tmp_path / "NBAFilm"
+    base = tmp_path / "NFLFilm"
     base.mkdir()
-    monkeypatch.setenv("NBA_BASE_DIR", str(base))
+    monkeypatch.setenv("NFL_BASE_DIR", str(base))
     monkeypatch.syspath_prepend(os.getcwd())
     config = importlib.import_module("config")
     importlib.reload(config)
@@ -69,22 +69,22 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
     clip2.write_text("data")
 
     data = {
-        "player": ["Jordan"],
+        "player": ["Mahomes"],
         "side": ["Offense"],
-        "playtype": ["dunk"],
-        "outcome": ["Make"],
+        "playtype": ["dropback-pass"],
+        "outcome": ["Completion"],
         "traits": [],
         "roles": [],
         "subroles": [],
         "badges": [],
         "context": [""],
-        "situation": ["iso"],
+        "situation": ["clean-pocket"],
         "quality": ["Good"],
     }
 
     tag_utils.process_clip_tags(str(clip1), data)
     tag_utils.process_clip_tags(str(clip2), data)
 
-    player_dir = base / "Jordan" / "Offense"
+    player_dir = base / "Mahomes" / "Offense"
     names = sorted(p.name for p in player_dir.iterdir())
-    assert names == ["dunk_iso_Make.mp4", "dunk_iso_Make_1.mp4"]
+    assert names == ["dropback-pass_clean-pocket_Completion.mp4", "dropback-pass_clean-pocket_Completion_1.mp4"]

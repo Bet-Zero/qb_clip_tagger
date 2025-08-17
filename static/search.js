@@ -1,12 +1,27 @@
 function populateSearch() {
   const params = new URLSearchParams(window.location.search);
 
+  // Find the matching playtype option by its value
   const playSelect = document.querySelector("select[name='playtype']");
-  if (playSelect) playSelect.value = params.get("playtype") || "";
+  if (playSelect) {
+    const playValue = params.get("playtype");
+    const playOption = Array.from(playSelect.options).find(
+      (opt) => opt.value === playValue
+    );
+    if (playOption) playSelect.value = playValue;
+  }
 
+  // Find the matching situation option by its value
   const situationSelect = document.querySelector("select[name='situation']");
-  if (situationSelect) situationSelect.value = params.get("situation") || "";
+  if (situationSelect) {
+    const situationValue = params.get("situation");
+    const situationOption = Array.from(situationSelect.options).find(
+      (opt) => opt.value === situationValue
+    );
+    if (situationOption) situationSelect.value = situationValue;
+  }
 
+  // Simple selects that use same value for both option text and value
   const outcomeSelect = document.querySelector("select[name='outcome']");
   if (outcomeSelect) outcomeSelect.value = params.get("outcome") || "";
 
@@ -20,11 +35,11 @@ function populateSearch() {
       .forEach((btn) => {
         btn.classList.toggle("selected", btn.dataset.value === qualityVal);
       });
-    const hidden = document.querySelector("input[name='quality']");
+    const hidden = document.querySelector('input[name="quality"]');
     if (hidden) hidden.value = qualityVal;
   }
 
-  // Roles (offense/defense selects)
+  // Roles handling - split comma separated roles and update both selects
   const rolesVal = params.get("roles");
   if (rolesVal) {
     const [off, def] = rolesVal.split(",");
@@ -44,9 +59,7 @@ function populateSearch() {
         `.selectable[data-field='${field}'], .chip[data-field='${field}']`
       )
       .forEach((el) => {
-        if (selections.includes(el.textContent)) {
-          el.classList.add("selected");
-        }
+        el.classList.toggle("selected", selections.includes(el.textContent));
       });
     const input = document.querySelector(`input[name='${field}']`);
     if (input) input.value = val;
@@ -55,7 +68,13 @@ function populateSearch() {
   ["traits", "badges", "subroles"].forEach(setTagSelections);
 }
 
-window.addEventListener("DOMContentLoaded", populateSearch);
+// Make sure populateTags from taggerData.js runs first
+window.addEventListener("DOMContentLoaded", () => {
+  if (typeof populateTags === "function") {
+    populateTags();
+  }
+  populateSearch();
+});
 
 function showInFinder(path) {
   fetch("/reveal", {

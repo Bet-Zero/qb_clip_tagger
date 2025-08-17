@@ -5,7 +5,7 @@ import subprocess
 import socket
 import time
 
-PROJECT_DIR = "/Volumes/Samsung PSSD T7/NBAFilm/__Tools/clip_tagger_web"
+PROJECT_DIR = "/Volumes/Samsung PSSD T7/NBAFilm/__Tools/qb_clip_tagger"
 os.chdir(PROJECT_DIR)
 
 def is_port_in_use(port=5000):
@@ -46,7 +46,7 @@ def launch_watcher():
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: nba [tagger|search|watcher]")
+        print("Usage: qb [tagger|search|watcher]")
         return
 
     cmd = sys.argv[1]
@@ -62,7 +62,7 @@ def main():
         launch_watcher()
 
     else:
-        print("Unknown command. Use: nba [tagger|search|watcher]")
+        print("Unknown command. Use: qb [tagger|search|watcher]")
 
 if __name__ == "__main__":
     main()

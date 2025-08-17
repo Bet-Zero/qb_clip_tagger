@@ -17,6 +17,15 @@
           playerNames
         );
 
+        // Add click handlers for traits and badges
+        document
+          .querySelectorAll(
+            '.chip-row[data-field="traits"] .chip, .chip-row[data-field="badges"] .chip'
+          )
+          .forEach((chip) => {
+            chip.addEventListener("click", toggleSelectLabel);
+          });
+
         document
           .querySelectorAll(".side-group .toggle-button")
           .forEach((btn) => {

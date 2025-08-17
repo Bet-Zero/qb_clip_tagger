@@ -60,18 +60,19 @@ def search_page():
     players = get_player_names()
     results = []
     if request.args:
+        # Split comma-separated strings into arrays and filter out empty strings
         filters = {
             "player": request.args.get("player"),
             "side": request.args.get("side"),
-            "playtype": request.args.get("playtype"),
+            "playtype": request.args.get("playtype"),  # value format from taggerData.js is already correct
             "outcome": request.args.get("outcome"),
             "context": request.args.get("context"),
-            "situation": request.args.get("situation"),
+            "situation": request.args.get("situation"),  # value format from taggerData.js is already correct
             "quality": request.args.get("quality"),
-            "traits": request.args.get("traits", "").split(",") if request.args.get("traits") else [],
-            "roles": request.args.get("roles", "").split(",") if request.args.get("roles") else [],
-            "subroles": request.args.get("subroles", "").split(",") if request.args.get("subroles") else [],
-            "badges": request.args.get("badges", "").split(",") if request.args.get("badges") else [],
+            "traits": [t for t in request.args.get("traits", "").split(",") if t],
+            "roles": [r for r in request.args.get("roles", "").split(",") if r],
+            "subroles": [s for s in request.args.get("subroles", "").split(",") if s],
+            "badges": [b for b in request.args.get("badges", "").split(",") if b],
         }
         logs = load_logs()
         for entry in logs:

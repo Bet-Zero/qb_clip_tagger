@@ -18,10 +18,17 @@ def process_clip_tags(clip_path, data):
     playtype = data.get("playtype", [""])[0]
     outcome = data.get("outcome", [""])[0]
 
-    traits = data.get("traits", [])
-    roles = data.get("roles", [])
-    subroles = data.get("subroles", [])
-    badges = data.get("badges", [])
+    # Split comma-separated strings into arrays
+    traits = data.get("traits", [""])[0].split(",") if data.get("traits") else []
+    roles = data.get("roles", [""])[0].split(",") if data.get("roles") else []
+    subroles = data.get("subroles", [""])[0].split(",") if data.get("subroles") else []
+    badges = data.get("badges", [""])[0].split(",") if data.get("badges") else []
+    # Remove any empty strings that result from trailing commas
+    traits = [t for t in traits if t]
+    roles = [r for r in roles if r]
+    subroles = [s for s in subroles if s]
+    badges = [b for b in badges if b]
+
     context = data.get("context", [""])[0]
     situation = data.get("situation", [""])[0]
     quality = data.get("quality", ["Good"])[0]

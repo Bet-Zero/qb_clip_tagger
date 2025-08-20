@@ -2,7 +2,6 @@ import os
 import json
 from pathlib import Path
 import importlib
-
 import tempfile
 
 import pytest
@@ -26,7 +25,6 @@ def test_process_clip_tags(monkeypatch, tmp_path):
 
     data = {
         "player": ["Mahomes"],
-        "side": ["Offense"],
         "playtype": ["dropback-pass"],
         "outcome": ["Completion"],
         "traits": [],
@@ -40,8 +38,8 @@ def test_process_clip_tags(monkeypatch, tmp_path):
 
     tag_utils.process_clip_tags(str(clip_path), data)
 
-    player_dir = base / "Mahomes" / "Offense"
-    files = list(player_dir.iterdir())
+    player_dir = base / "Mahomes"
+    files = [p for p in player_dir.iterdir() if p.suffix == ".mp4"]
     assert len(files) == 1
     saved = files[0]
     assert saved.name == "dropback-pass_clean-pocket_Completion.mp4"
@@ -70,7 +68,6 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
 
     data = {
         "player": ["Mahomes"],
-        "side": ["Offense"],
         "playtype": ["dropback-pass"],
         "outcome": ["Completion"],
         "traits": [],
@@ -85,6 +82,10 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
     tag_utils.process_clip_tags(str(clip1), data)
     tag_utils.process_clip_tags(str(clip2), data)
 
-    player_dir = base / "Mahomes" / "Offense"
-    names = sorted(p.name for p in player_dir.iterdir())
-    assert names == ["dropback-pass_clean-pocket_Completion.mp4", "dropback-pass_clean-pocket_Completion_1.mp4"]
+    player_dir = base / "Mahomes"
+    names = sorted(p.name for p in player_dir.glob("*.mp4"))
+    assert names == [
+        "dropback-pass_clean-pocket_Completion.mp4",
+        "dropback-pass_clean-pocket_Completion_1.mp4",
+    ]
+

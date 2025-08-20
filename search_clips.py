@@ -41,7 +41,6 @@ def matches(entry, filters):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Search tagged clips")
     parser.add_argument("--player")
-    parser.add_argument("--side")
     parser.add_argument("--playtype")
     parser.add_argument("--outcome")
     parser.add_argument("--context")
@@ -56,7 +55,6 @@ def main(argv=None):
 
     filters = {
         "player": args.player,
-        "side": args.side,
         "playtype": args.playtype,
         "outcome": args.outcome,
         "context": args.context,
@@ -71,7 +69,7 @@ def main(argv=None):
     logs = load_logs()
     results = [e for e in logs if matches(e, filters)]
     for e in results:
-        path = Path(config.BASE_DIR) / e["player"] / e["side"] / e["filename"]
+        path = Path(config.BASE_DIR) / e["player"] / e["filename"]
         print(path)
 
 

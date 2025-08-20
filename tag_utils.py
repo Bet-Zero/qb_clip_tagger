@@ -14,7 +14,6 @@ BASE_DIR = config.BASE_DIR
 
 def process_clip_tags(clip_path, data):
     player = data.get("player", [""])[0]
-    side = data.get("side", ["Offense"])[0]
     playtype = data.get("playtype", [""])[0]
     outcome = data.get("outcome", [""])[0]
 
@@ -36,7 +35,7 @@ def process_clip_tags(clip_path, data):
     # Rename file with incrementing numeric suffix if needed
     ext = Path(clip_path).suffix
     base_name = f"{playtype}_{situation}_{outcome}"
-    new_dir = BASE_DIR / player / side
+    new_dir = BASE_DIR / player
     try:
         new_dir.mkdir(parents=True, exist_ok=True)
         count = 0
@@ -62,19 +61,20 @@ def process_clip_tags(clip_path, data):
             logging.error("Failed to load log %s: %s", log_path, exc)
             log = []
 
-    log.append({
-        "filename": new_name,
-        "side": side,
-        "playtype": playtype,
-        "outcome": outcome,
-        "traits": traits,
-        "roles": roles,
-        "subroles": subroles,
-        "badges": badges,
-        "context": context,
-        "situation": situation,
-        "quality": quality,
-    })
+    log.append(
+        {
+            "filename": new_name,
+            "playtype": playtype,
+            "outcome": outcome,
+            "traits": traits,
+            "roles": roles,
+            "subroles": subroles,
+            "badges": badges,
+            "context": context,
+            "situation": situation,
+            "quality": quality,
+        }
+    )
 
     try:
         with open(log_path, "w") as f:

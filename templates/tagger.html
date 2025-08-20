@@ -23,8 +23,13 @@
           document.querySelector("select[name='context']").value
         );
         localStorage.setItem(
+<<<<<<< HEAD
           "lastRole",
           document.querySelector("select[name='role']").value
+=======
+          "lastOffenseRole",
+          document.querySelector("select[name='offense_role']").value
+>>>>>>> origin/main
         );
       }
 
@@ -73,8 +78,13 @@
           localStorage.getItem("lastSituation") || "";
         document.querySelector("select[name='context']").value =
           localStorage.getItem("lastContext") || "";
+<<<<<<< HEAD
         document.querySelector("select[name='role']").value =
           localStorage.getItem("lastRole") || "";
+=======
+        document.querySelector("select[name='offense_role']").value =
+          localStorage.getItem("lastOffenseRole") || "";
+>>>>>>> origin/main
         if (typeof updateRoles === "function") updateRoles();
       }
 
@@ -84,7 +94,11 @@
           "lastOutcome",
           "lastSituation",
           "lastContext",
+<<<<<<< HEAD
           "lastRole",
+=======
+          "lastOffenseRole",
+>>>>>>> origin/main
           "lastSubroles",
         ].forEach((k) => localStorage.removeItem(k));
         setSelectValues();
@@ -242,7 +256,11 @@
         <div id="roles-section" class="tag-section">
           <label>Role</label>
           <div class="column-block">
+<<<<<<< HEAD
             <select class="role-select" name="role"></select>
+=======
+            <select class="role-select" name="offense_role"></select>
+>>>>>>> origin/main
           </div>
           <input type="hidden" name="roles" />
         </div>

@@ -11,7 +11,7 @@ const roles = [
   "Red Zone Specialist",
 ];
 
-const subrolesPositive = [
+const offensiveSubrolesPositive = [
   "Accurate Passer",
   "Deep Ball Thrower",
   "Quick Release",
@@ -45,7 +45,6 @@ const subrolesNegative = [
   "Poor Timing",
   "Stares Down Receivers",
 ];
-
 
 const traits = [
   "Arm Strength",
@@ -109,7 +108,7 @@ const playTypes = [
 
 const outcomes = [
   "Completion",
-  "Incompletion", 
+  "Incompletion",
   "Touchdown",
   "Interception",
   "Fumble",
@@ -234,7 +233,7 @@ function populateTags() {
     const placeholder = new Option("Role", "");
     placeholder.className = "placeholder-option";
     roleSelect.add(placeholder);
-    roles.forEach((role) => {
+    offensiveRoles.forEach((role) => {
       roleSelect.add(new Option(role, role));
     });
 
@@ -252,11 +251,11 @@ function populateTags() {
   const subroleList = document.querySelector("#subroles-section .tag-list");
   if (subroleList) {
     subroleList.innerHTML += "<div class='subrole-divider'>Positive</div>";
-    subrolesPositive.forEach((sub) =>
+    offensiveSubrolesPositive.forEach((sub) =>
       subroleList.appendChild(createSelectable(sub, "subroles"))
     );
     subroleList.innerHTML += "<div class='subrole-divider'>Negative</div>";
-    subrolesNegative.forEach((sub) =>
+    offensiveSubrolesNegative.forEach((sub) =>
       subroleList.appendChild(createSelectable(sub, "subroles"))
     );
   }

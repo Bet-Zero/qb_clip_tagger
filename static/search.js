@@ -42,8 +42,8 @@ function populateSearch() {
   // Role handling - set select and hidden input
   const rolesVal = params.get("roles");
   if (rolesVal) {
-    const roleSelect = document.querySelector("select[name='role']");
-    if (roleSelect) roleSelect.value = rolesVal;
+    const offenseSelect = document.querySelector("select[name='offense_role']");
+    if (offenseSelect) offenseSelect.value = rolesVal;
     if (typeof updateRoles === "function") updateRoles();
   }
 
@@ -77,7 +77,7 @@ window.addEventListener("DOMContentLoaded", () => {
         chip.addEventListener("click", toggleSelectLabel);
       });
   }, 0); // Run after current execution context
-  
+
   populateSearch();
 });
 

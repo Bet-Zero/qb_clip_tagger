@@ -39,14 +39,11 @@ function populateSearch() {
     if (hidden) hidden.value = qualityVal;
   }
 
-  // Roles handling - split comma separated roles and update both selects
+  // Role handling - set select and hidden input
   const rolesVal = params.get("roles");
   if (rolesVal) {
-    const [off, def] = rolesVal.split(",");
-    const offenseSelect = document.querySelector("select[name='offense_role']");
-    const defenseSelect = document.querySelector("select[name='defense_role']");
-    if (offenseSelect) offenseSelect.value = off || "";
-    if (defenseSelect) defenseSelect.value = def || "";
+    const roleSelect = document.querySelector("select[name='role']");
+    if (roleSelect) roleSelect.value = rolesVal;
     if (typeof updateRoles === "function") updateRoles();
   }
 

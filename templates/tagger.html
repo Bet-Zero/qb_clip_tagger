@@ -23,29 +23,18 @@
           document.querySelector("select[name='context']").value
         );
         localStorage.setItem(
-          "lastOffenseRole",
-          document.querySelector("select[name='offense_role']").value
-        );
-        localStorage.setItem(
-          "lastDefenseRole",
-          document.querySelector("select[name='defense_role']").value
+          "lastRole",
+          document.querySelector("select[name='role']").value
         );
       }
 
       function closeAfterSubmit() {
         const player = document.querySelector('input[name="player"]').value;
-        const side =
-          document.querySelector(".side-group .toggle-button.selected")?.dataset
-            .value || "Offense";
         const quality =
           document.querySelector(".quality-group .toggle-button.selected")
             ?.dataset.value || "";
         localStorage.setItem("lastPlayer", player);
-        localStorage.setItem("lastSide", side);
         localStorage.setItem("lastQuality", quality);
-        ("Offense");
-        localStorage.setItem("lastPlayer", player);
-        localStorage.setItem("lastSide", side);
         saveSelectValues();
         const subInput = document.querySelector('input[name="subroles"]');
         if (subInput) {
@@ -84,10 +73,8 @@
           localStorage.getItem("lastSituation") || "";
         document.querySelector("select[name='context']").value =
           localStorage.getItem("lastContext") || "";
-        document.querySelector("select[name='offense_role']").value =
-          localStorage.getItem("lastOffenseRole") || "";
-        document.querySelector("select[name='defense_role']").value =
-          localStorage.getItem("lastDefenseRole") || "";
+        document.querySelector("select[name='role']").value =
+          localStorage.getItem("lastRole") || "";
         if (typeof updateRoles === "function") updateRoles();
       }
 
@@ -97,8 +84,7 @@
           "lastOutcome",
           "lastSituation",
           "lastContext",
-          "lastOffenseRole",
-          "lastDefenseRole",
+          "lastRole",
           "lastSubroles",
         ].forEach((k) => localStorage.removeItem(k));
         setSelectValues();
@@ -106,20 +92,10 @@
 
       window.onload = function () {
         const lastPlayer = localStorage.getItem("lastPlayer");
-        const lastSide = localStorage.getItem("lastSide");
-
         const lastQuality = localStorage.getItem("lastQuality");
 
         if (lastPlayer)
           document.querySelector('input[name="player"]').value = lastPlayer;
-        if (lastSide) {
-          document
-            .querySelectorAll(".side-group .toggle-button")
-            .forEach((btn) => {
-              btn.classList.toggle("selected", btn.dataset.value === lastSide);
-            });
-          document.querySelector('input[name="side"]').value = lastSide;
-        }
         if (lastQuality) {
           document
             .querySelectorAll(".quality-group .toggle-button")
@@ -182,18 +158,6 @@
         }
       }
 
-      function toggleSide(event) {
-        document
-          .querySelectorAll(".side-group .toggle-button")
-          .forEach((btn) => btn.classList.remove("selected"));
-        event.target.classList.add("selected");
-        document.querySelector('input[name="side"]').value =
-          event.target.dataset.value;
-        if (event.target.dataset.value !== localStorage.getItem("lastSide")) {
-          clearSavedSelections();
-        }
-      }
-
       function toggleQuality(event) {
         const btn = event.currentTarget || event.target;
         const wasSelected = btn.classList.contains("selected");
@@ -235,38 +199,6 @@
             list="player-list"
           />
           <datalist id="player-list"></datalist>
-          <div class="toggle-group side-group">
-            <div
-              class="toggle-button selected"
-              data-value="Offense"
-              onclick="toggleSide(event)"
-            >
-              Offense
-            </div>
-            <div
-              class="toggle-button"
-              data-value="Defense"
-              onclick="toggleSide(event)"
-            >
-              Defense
-            </div>
-          </div>
-          <input type="hidden" name="side" value="Offense" />
-        </div>
-
-        <hr class="section-divider" />
-
-        <div class="form-row">
-          <select name="playtype"></select>
-          <select name="situation"></select>
-        </div>
-
-        <div class="form-row">
-          <select name="outcome"></select>
-          <select name="context"></select>
-        </div>
-
-        <div class="form-row">
           <div class="toggle-group quality-group">
             <div
               class="toggle-button"
@@ -288,6 +220,18 @@
 
         <hr class="section-divider" />
 
+        <div class="form-row">
+          <select name="playtype"></select>
+          <select name="situation"></select>
+        </div>
+
+        <div class="form-row">
+          <select name="outcome"></select>
+          <select name="context"></select>
+        </div>
+
+        <hr class="section-divider" />
+
         <div class="form-group">
           <label>Traits</label>
           <div class="chip-row" data-field="traits"></div>
@@ -296,14 +240,9 @@
 
         <!-- Roles -->
         <div id="roles-section" class="tag-section">
-          <label>Roles</label>
-          <div class="dual-column">
-            <div class="column-block">
-              <select class="role-select" name="offense_role"></select>
-            </div>
-            <div class="column-block">
-              <select class="role-select" name="defense_role"></select>
-            </div>
+          <label>Role</label>
+          <div class="column-block">
+            <select class="role-select" name="role"></select>
           </div>
           <input type="hidden" name="roles" />
         </div>
@@ -312,35 +251,17 @@
         <details class="subrole-drawer">
           <summary>SubRoles</summary>
           <div id="subroles-section" class="tag-section">
-            <div class="dual-column compact-mode">
-              <div class="column-block">
-                <div class="tag-box">
-                  <div class="box-header-row">
-                    <span class="box-title">Offense</span>
-                    <input
-                      type="text"
-                      class="filter-input"
-                      placeholder="Search..."
-                      oninput="filterList(this)"
-                    />
-                  </div>
-                  <div class="tag-list scrollable" data-filter-group></div>
-                </div>
+            <div class="tag-box">
+              <div class="box-header-row">
+                <span class="box-title">SubRoles</span>
+                <input
+                  type="text"
+                  class="filter-input"
+                  placeholder="Search..."
+                  oninput="filterList(this)"
+                />
               </div>
-              <div class="column-block">
-                <div class="tag-box">
-                  <div class="box-header-row">
-                    <span class="box-title">Defense</span>
-                    <input
-                      type="text"
-                      class="filter-input"
-                      placeholder="Search..."
-                      oninput="filterList(this)"
-                    />
-                  </div>
-                  <div class="tag-list scrollable" data-filter-group></div>
-                </div>
-              </div>
+              <div class="tag-list scrollable" data-filter-group></div>
             </div>
             <input type="hidden" name="subroles" />
           </div>

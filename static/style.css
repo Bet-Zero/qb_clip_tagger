@@ -230,13 +230,6 @@ button[type="submit"]:hover {
   flex: 1 1 50%;
 }
 
-/* Force offense/defense blocks side by side */
-.role-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
 
 /* Stack options vertically */
 .vertical-options {

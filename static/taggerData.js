@@ -233,7 +233,7 @@ function populateTags() {
     const placeholder = new Option("Role", "");
     placeholder.className = "placeholder-option";
     roleSelect.add(placeholder);
-    offensiveRoles.forEach((role) => {
+    roles.forEach((role) => {
       roleSelect.add(new Option(role, role));
     });
 
@@ -255,7 +255,7 @@ function populateTags() {
       subroleList.appendChild(createSelectable(sub, "subroles"))
     );
     subroleList.innerHTML += "<div class='subrole-divider'>Negative</div>";
-    offensiveSubrolesNegative.forEach((sub) =>
+    subrolesNegative.forEach((sub) =>
       subroleList.appendChild(createSelectable(sub, "subroles"))
     );
   }

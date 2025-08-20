@@ -46,6 +46,7 @@ def main(argv=None):
     parser.add_argument("--context")
     parser.add_argument("--situation")
     parser.add_argument("--quality")
+    parser.add_argument("--distance")
     parser.add_argument("--trait", action="append", dest="traits")
     parser.add_argument("--role", action="append", dest="roles")
     parser.add_argument("--subrole", action="append", dest="subroles")
@@ -60,6 +61,7 @@ def main(argv=None):
         "context": args.context,
         "situation": args.situation,
         "quality": args.quality,
+        "distance": args.distance,
         "traits": args.traits,
         "roles": args.roles,
         "subroles": args.subroles,

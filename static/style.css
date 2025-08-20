@@ -132,6 +132,16 @@ button[type="submit"]:hover {
   min-width: 4rem;
 }
 
+/* Center and size the distance toggle */
+.distance-group {
+  justify-content: center;
+  margin: 0 auto;
+}
+.distance-group .toggle-button {
+  flex: 0 0 auto;
+  min-width: 4rem;
+}
+
 .toggle-button {
   flex: 1;
   text-align: center;
@@ -229,7 +239,6 @@ button[type="submit"]:hover {
 .form-section-flex > div {
   flex: 1 1 50%;
 }
-
 
 /* Stack options vertically */
 .vertical-options {

@@ -23,13 +23,8 @@
           document.querySelector("select[name='context']").value
         );
         localStorage.setItem(
-<<<<<<< HEAD
           "lastRole",
-          document.querySelector("select[name='role']").value
-=======
-          "lastOffenseRole",
-          document.querySelector("select[name='offense_role']").value
->>>>>>> origin/main
+          document.querySelector("select[name='role']").value || ""
         );
       }
 
@@ -38,8 +33,12 @@
         const quality =
           document.querySelector(".quality-group .toggle-button.selected")
             ?.dataset.value || "";
+        const distance =
+          document.querySelector(".distance-group .toggle-button.selected")
+            ?.dataset.value || "";
         localStorage.setItem("lastPlayer", player);
         localStorage.setItem("lastQuality", quality);
+        localStorage.setItem("lastDistance", distance);
         saveSelectValues();
         const subInput = document.querySelector('input[name="subroles"]');
         if (subInput) {
@@ -78,13 +77,10 @@
           localStorage.getItem("lastSituation") || "";
         document.querySelector("select[name='context']").value =
           localStorage.getItem("lastContext") || "";
-<<<<<<< HEAD
-        document.querySelector("select[name='role']").value =
-          localStorage.getItem("lastRole") || "";
-=======
-        document.querySelector("select[name='offense_role']").value =
-          localStorage.getItem("lastOffenseRole") || "";
->>>>>>> origin/main
+        const roleSelect = document.querySelector("select[name='role']");
+        if (roleSelect) {
+          roleSelect.value = localStorage.getItem("lastRole") || "";
+        }
         if (typeof updateRoles === "function") updateRoles();
       }
 
@@ -94,11 +90,7 @@
           "lastOutcome",
           "lastSituation",
           "lastContext",
-<<<<<<< HEAD
           "lastRole",
-=======
-          "lastOffenseRole",
->>>>>>> origin/main
           "lastSubroles",
         ].forEach((k) => localStorage.removeItem(k));
         setSelectValues();
@@ -107,6 +99,7 @@
       window.onload = function () {
         const lastPlayer = localStorage.getItem("lastPlayer");
         const lastQuality = localStorage.getItem("lastQuality");
+        const lastDistance = localStorage.getItem("lastDistance");
 
         if (lastPlayer)
           document.querySelector('input[name="player"]').value = lastPlayer;
@@ -120,6 +113,17 @@
               );
             });
           document.querySelector('input[name="quality"]').value = lastQuality;
+        }
+        if (lastDistance) {
+          document
+            .querySelectorAll(".distance-group .toggle-button")
+            .forEach((btn) => {
+              btn.classList.toggle(
+                "selected",
+                btn.dataset.value === lastDistance
+              );
+            });
+          document.querySelector('input[name="distance"]').value = lastDistance;
         }
         loadPlayers();
         setSelectValues();
@@ -187,6 +191,21 @@
         }
       }
 
+      function toggleDistance(event) {
+        const btn = event.currentTarget || event.target;
+        const wasSelected = btn.classList.contains("selected");
+        document
+          .querySelectorAll(".distance-group .toggle-button")
+          .forEach((b) => b.classList.remove("selected"));
+        const hidden = document.querySelector('input[name="distance"]');
+        if (wasSelected) {
+          if (hidden) hidden.value = "";
+        } else {
+          btn.classList.add("selected");
+          if (hidden) hidden.value = btn.dataset.value;
+        }
+      }
+
       function filterList(input) {
         const box = input.closest(".tag-box");
         const container = box.querySelector(".tag-list");
@@ -244,6 +263,34 @@
           <select name="context"></select>
         </div>
 
+        <!-- Distance selector -->
+        <div class="form-row">
+          <div class="toggle-group distance-group">
+            <div
+              class="toggle-button"
+              data-value="Short"
+              onclick="toggleDistance(event)"
+            >
+              Short
+            </div>
+            <div
+              class="toggle-button"
+              data-value="Medium"
+              onclick="toggleDistance(event)"
+            >
+              Medium
+            </div>
+            <div
+              class="toggle-button"
+              data-value="Deep"
+              onclick="toggleDistance(event)"
+            >
+              Deep
+            </div>
+          </div>
+          <input type="hidden" name="distance" value="" />
+        </div>
+
         <hr class="section-divider" />
 
         <div class="form-group">
@@ -256,11 +303,7 @@
         <div id="roles-section" class="tag-section">
           <label>Role</label>
           <div class="column-block">
-<<<<<<< HEAD
             <select class="role-select" name="role"></select>
-=======
-            <select class="role-select" name="offense_role"></select>
->>>>>>> origin/main
           </div>
           <input type="hidden" name="roles" />
         </div>

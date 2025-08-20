@@ -46,10 +46,10 @@ def players():
     return jsonify({"players": get_player_names()})
 
 
-@app.route("/clip/<player>/<side>/<path:filename>")
-def serve_clip(player, side, filename):
-    """Return the video file for the given player/side/filename."""
-    path = Path(config.BASE_DIR) / player / side / filename
+@app.route("/clip/<player>/<path:filename>")
+def serve_clip(player, filename):
+    """Return the video file for the given player/filename."""
+    path = Path(config.BASE_DIR) / player / filename
     if not path.exists():
         abort(404)
     return send_file(path)
@@ -63,11 +63,10 @@ def search_page():
         # Split comma-separated strings into arrays and filter out empty strings
         filters = {
             "player": request.args.get("player"),
-            "side": request.args.get("side"),
-            "playtype": request.args.get("playtype"),  # value format from taggerData.js is already correct
+            "playtype": request.args.get("playtype"),
             "outcome": request.args.get("outcome"),
             "context": request.args.get("context"),
-            "situation": request.args.get("situation"),  # value format from taggerData.js is already correct
+            "situation": request.args.get("situation"),
             "quality": request.args.get("quality"),
             "traits": [t for t in request.args.get("traits", "").split(",") if t],
             "roles": [r for r in request.args.get("roles", "").split(",") if r],
@@ -77,14 +76,15 @@ def search_page():
         logs = load_logs()
         for entry in logs:
             if matches(entry, filters):
-                path = Path(config.BASE_DIR) / entry["player"] / entry["side"] / entry["filename"]
-                results.append({
-                    "label": f"{entry['player']}: {entry['filename']}",
-                    "full_path": str(path),
-                    "player": entry["player"],
-                    "side": entry["side"],
-                    "filename": entry["filename"],
-                })
+                path = Path(config.BASE_DIR) / entry["player"] / entry["filename"]
+                results.append(
+                    {
+                        "label": f"{entry['player']}: {entry['filename']}",
+                        "full_path": str(path),
+                        "player": entry["player"],
+                        "filename": entry["filename"],
+                    }
+                )
     return render_template("search.html", players=players, results=results, args=request.args)
 
 

@@ -11,20 +11,6 @@ const offensiveRoles = [
   "Red Zone Specialist",
 ];
 
-const defensiveRoles = [
-  "Point-of-Attack Defender",
-  "Chaser",
-  "Wing Stopper",
-  "Off-Ball Helper",
-  "Defensive Playmaker",
-  "Defensive Quarterback",
-  "Switchable Wing",
-  "Switchable Big",
-  "Mobile Big",
-  "Post Defender",
-  "Anchor Big",
-];
-
 const offensiveSubrolesPositive = [
   "Accurate Passer",
   "Deep Ball Thrower",
@@ -60,41 +46,6 @@ const offensiveSubrolesNegative = [
   "Stares Down Receivers",
 ];
 
-const defensiveSubrolesPositive = [
-  "Pass Rush",
-  "Coverage Skills",
-  "Run Defense",
-  "Blitz Execution",
-  "Containment",
-  "QB Spy",
-  "Zone Coverage",
-  "Man Coverage",
-  "Pressure Creation",
-  "Gap Control",
-  "Pursuit",
-  "Tackling",
-  "Disruption",
-  "Communication",
-  "Recognition",
-];
-
-const defensiveSubrolesNegative = [
-  "Poor Pass Rush",
-  "Coverage Lapses",
-  "Run Defense Issues",
-  "Missed Tackles",
-  "Poor Angles",
-  "Late Recognition",
-  "Blown Assignments",
-  "Poor Pursuit",
-  "Gap Issues",
-  "Penalty Prone",
-  "Poor Communication",
-  "Overaggressive",
-  "Out of Position",
-  "Slow Reactions",
-  "Missed Containment",
-];
 
 const traits = [
   "Arm Strength",
@@ -275,60 +226,38 @@ function populateTags() {
     contextSelect.add(option);
   });
 
-  // Roles (Offense & Defense)
-  const roleSelects = document.querySelectorAll(
+  // Role selection
+  const roleSelect = document.querySelector(
     "#roles-section select.role-select"
   );
-  if (roleSelects.length >= 2) {
-    const [offenseSelect, defenseSelect] = roleSelects;
-    const offensePlaceholder = new Option("Offense", "");
-    offensePlaceholder.className = "placeholder-option";
-    offenseSelect.add(offensePlaceholder);
-    const defensePlaceholder = new Option("Defense", "");
-    defensePlaceholder.className = "placeholder-option";
-    defenseSelect.add(defensePlaceholder);
+  if (roleSelect) {
+    const placeholder = new Option("Role", "");
+    placeholder.className = "placeholder-option";
+    roleSelect.add(placeholder);
     offensiveRoles.forEach((role) => {
-      offenseSelect.add(new Option(role, role));
-    });
-    defensiveRoles.forEach((role) => {
-      defenseSelect.add(new Option(role, role));
+      roleSelect.add(new Option(role, role));
     });
 
     const hiddenInput = document.querySelector("input[name='roles']");
     window.updateRoles = () => {
-      const selected = [offenseSelect.value, defenseSelect.value].filter(
-        Boolean
-      );
-      hiddenInput.value = selected.join(",");
+      hiddenInput.value = roleSelect.value || "";
     };
 
-    offenseSelect.addEventListener("change", window.updateRoles);
-    defenseSelect.addEventListener("change", window.updateRoles);
+    roleSelect.addEventListener("change", window.updateRoles);
     // Initialize hidden value
     window.updateRoles();
   }
 
-  // SubRoles (Offense & Defense, with Positive/Negative sections)
-  const subroleLists = document.querySelectorAll("#subroles-section .tag-list");
-  if (subroleLists.length >= 2) {
-    const [offenseList, defenseList] = subroleLists;
-
-    offenseList.innerHTML += "<div class='subrole-divider'>Positive</div>";
+  // SubRoles with Positive/Negative sections
+  const subroleList = document.querySelector("#subroles-section .tag-list");
+  if (subroleList) {
+    subroleList.innerHTML += "<div class='subrole-divider'>Positive</div>";
     offensiveSubrolesPositive.forEach((sub) =>
-      offenseList.appendChild(createSelectable(sub, "subroles"))
+      subroleList.appendChild(createSelectable(sub, "subroles"))
     );
-    offenseList.innerHTML += "<div class='subrole-divider'>Negative</div>";
+    subroleList.innerHTML += "<div class='subrole-divider'>Negative</div>";
     offensiveSubrolesNegative.forEach((sub) =>
-      offenseList.appendChild(createSelectable(sub, "subroles"))
-    );
-
-    defenseList.innerHTML += "<div class='subrole-divider'>Positive</div>";
-    defensiveSubrolesPositive.forEach((sub) =>
-      defenseList.appendChild(createSelectable(sub, "subroles"))
-    );
-    defenseList.innerHTML += "<div class='subrole-divider'>Negative</div>";
-    defensiveSubrolesNegative.forEach((sub) =>
-      defenseList.appendChild(createSelectable(sub, "subroles"))
+      subroleList.appendChild(createSelectable(sub, "subroles"))
     );
   }
 }

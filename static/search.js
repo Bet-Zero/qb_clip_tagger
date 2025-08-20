@@ -39,11 +39,22 @@ function populateSearch() {
     if (hidden) hidden.value = qualityVal;
   }
 
+  const distanceVal = params.get("distance");
+  if (distanceVal) {
+    document
+      .querySelectorAll(".distance-group .toggle-button")
+      .forEach((btn) => {
+        btn.classList.toggle("selected", btn.dataset.value === distanceVal);
+      });
+    const hidden = document.querySelector('input[name="distance"]');
+    if (hidden) hidden.value = distanceVal;
+  }
+
   // Role handling - set select and hidden input
   const rolesVal = params.get("roles");
   if (rolesVal) {
-    const offenseSelect = document.querySelector("select[name='offense_role']");
-    if (offenseSelect) offenseSelect.value = rolesVal;
+    const roleSelect = document.querySelector("select[name='role']");
+    if (roleSelect) roleSelect.value = rolesVal;
     if (typeof updateRoles === "function") updateRoles();
   }
 
@@ -77,7 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
         chip.addEventListener("click", toggleSelectLabel);
       });
   }, 0); // Run after current execution context
-  
+
   populateSearch();
 });
 

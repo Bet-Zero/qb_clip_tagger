@@ -68,6 +68,7 @@ def search_page():
             "context": request.args.get("context"),
             "situation": request.args.get("situation"),
             "quality": request.args.get("quality"),
+            "distance": request.args.get("distance"),
             "traits": [t for t in request.args.get("traits", "").split(",") if t],
             "roles": [r for r in request.args.get("roles", "").split(",") if r],
             "subroles": [s for s in request.args.get("subroles", "").split(",") if s],

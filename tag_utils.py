@@ -31,6 +31,7 @@ def process_clip_tags(clip_path, data):
     context = data.get("context", [""])[0]
     situation = data.get("situation", [""])[0]
     quality = data.get("quality", ["Good"])[0]
+    distance = data.get("distance", [""])[0]
 
     # Rename file with incrementing numeric suffix if needed
     ext = Path(clip_path).suffix
@@ -73,6 +74,7 @@ def process_clip_tags(clip_path, data):
             "context": context,
             "situation": situation,
             "quality": quality,
+            "distance": distance,
         }
     )
 

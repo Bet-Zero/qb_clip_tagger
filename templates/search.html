@@ -38,6 +38,24 @@
             });
           });
 
+        document
+          .querySelectorAll(".distance-group .toggle-button")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const wasSelected = btn.classList.contains("selected");
+              document
+                .querySelectorAll(".distance-group .toggle-button")
+                .forEach((b) => b.classList.remove("selected"));
+              const hidden = document.querySelector('input[name="distance"]');
+              if (wasSelected) {
+                if (hidden) hidden.value = "";
+              } else {
+                btn.classList.add("selected");
+                if (hidden) hidden.value = btn.dataset.value;
+              }
+            });
+          });
+
         document.querySelectorAll(".filter-input").forEach((input) => {
           input.addEventListener("input", () => {
             const box = input.closest(".tag-box");
@@ -116,6 +134,35 @@
           <select name="context"></select>
         </div>
 
+        <!-- Distance selector -->
+        <div class="form-row">
+          <div class="toggle-group distance-group">
+            <div
+              class="toggle-button {% if args.get('distance')=='Short' %}selected{% endif %}"
+              data-value="Short"
+            >
+              Short
+            </div>
+            <div
+              class="toggle-button {% if args.get('distance')=='Medium' %}selected{% endif %}"
+              data-value="Medium"
+            >
+              Medium
+            </div>
+            <div
+              class="toggle-button {% if args.get('distance')=='Deep' %}selected{% endif %}"
+              data-value="Deep"
+            >
+              Deep
+            </div>
+          </div>
+          <input
+            type="hidden"
+            name="distance"
+            value="{{ args.get('distance','') }}"
+          />
+        </div>
+
         <hr class="section-divider" />
 
         <div class="form-group">
@@ -131,7 +178,7 @@
         <div id="roles-section" class="tag-section">
           <label>Role</label>
           <div class="column-block">
-            <select class="role-select" name="offense_role"></select>
+            <select class="role-select" name="role"></select>
           </div>
           <input
             type="hidden"

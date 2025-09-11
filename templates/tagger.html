@@ -26,6 +26,27 @@
           "lastRole",
           document.querySelector("select[name='role']").value || ""
         );
+        localStorage.setItem(
+          "lastYear",
+          document.querySelector("select[name='year']").value || ""
+        );
+        // Game information fields
+        localStorage.setItem(
+          "lastOpponent",
+          document.querySelector("select[name='opponent']").value || ""
+        );
+        localStorage.setItem(
+          "lastHomeAway",
+          document.querySelector("select[name='home_away']").value || ""
+        );
+        localStorage.setItem(
+          "lastQuarter",
+          document.querySelector("select[name='quarter']").value || ""
+        );
+        localStorage.setItem(
+          "lastDown",
+          document.querySelector("select[name='down']").value || ""
+        );
       }
 
       function closeAfterSubmit() {
@@ -77,11 +98,23 @@
           localStorage.getItem("lastSituation") || "";
         document.querySelector("select[name='context']").value =
           localStorage.getItem("lastContext") || "";
+        document.querySelector("select[name='year']").value =
+          localStorage.getItem("lastYear") || "2025";
         const roleSelect = document.querySelector("select[name='role']");
         if (roleSelect) {
           roleSelect.value = localStorage.getItem("lastRole") || "";
         }
         if (typeof updateRoles === "function") updateRoles();
+
+        // Game information fields
+        document.querySelector("select[name='opponent']").value =
+          localStorage.getItem("lastOpponent") || "";
+        document.querySelector("select[name='home_away']").value =
+          localStorage.getItem("lastHomeAway") || "";
+        document.querySelector("select[name='quarter']").value =
+          localStorage.getItem("lastQuarter") || "";
+        document.querySelector("select[name='down']").value =
+          localStorage.getItem("lastDown") || "";
       }
 
       function clearSavedSelections() {
@@ -92,6 +125,11 @@
           "lastContext",
           "lastRole",
           "lastSubroles",
+          "lastYear",
+          "lastOpponent",
+          "lastHomeAway",
+          "lastQuarter",
+          "lastDown",
         ].forEach((k) => localStorage.removeItem(k));
         setSelectValues();
       }
@@ -253,9 +291,70 @@
 
         <hr class="section-divider" />
 
+        <!-- Game Information Section -->
+        <div class="form-row game-info">
+          <select name="opponent">
+            <option value="">Opp</option>
+            <option value="ARI">ARI</option>
+            <option value="ATL">ATL</option>
+            <option value="BAL">BAL</option>
+            <option value="BUF">BUF</option>
+            <option value="CAR">CAR</option>
+            <option value="CHI">CHI</option>
+            <option value="CIN">CIN</option>
+            <option value="CLE">CLE</option>
+            <option value="DAL">DAL</option>
+            <option value="DEN">DEN</option>
+            <option value="DET">DET</option>
+            <option value="GB">GB</option>
+            <option value="HOU">HOU</option>
+            <option value="IND">IND</option>
+            <option value="JAX">JAX</option>
+            <option value="KC">KC</option>
+            <option value="LV">LV</option>
+            <option value="LAC">LAC</option>
+            <option value="LAR">LAR</option>
+            <option value="MIA">MIA</option>
+            <option value="MIN">MIN</option>
+            <option value="NE">NE</option>
+            <option value="NO">NO</option>
+            <option value="NYG">NYG</option>
+            <option value="NYJ">NYJ</option>
+            <option value="PHI">PHI</option>
+            <option value="PIT">PIT</option>
+            <option value="SF">SF</option>
+            <option value="SEA">SEA</option>
+            <option value="TB">TB</option>
+            <option value="TEN">TEN</option>
+            <option value="WAS">WAS</option>
+          </select>
+          <select name="home_away">
+            <option value="">vs/@</option>
+            <option value="vs">vs</option>
+            <option value="@">@</option>
+          </select>
+          <select name="quarter">
+            <option value="">Qtr</option>
+            <option value="1Q">1Q</option>
+            <option value="2Q">2Q</option>
+            <option value="3Q">3Q</option>
+            <option value="4Q">4Q</option>
+            <option value="OT">OT</option>
+          </select>
+          <select name="down">
+            <option value="">Dn</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="3rd">3rd</option>
+            <option value="4th">4th</option>
+          </select>
+        </div>
+
+        <hr class="section-divider" />
+
         <div class="form-row">
           <select name="playtype"></select>
-          <select name="situation"></select>
+          <select name="situation" aria-label="Pocket"></select>
         </div>
 
         <div class="form-row">
@@ -336,7 +435,16 @@
           <input type="hidden" name="badges" />
         </div>
 
-        <button type="submit">💾 Save Clip</button>
+        <!-- Save button with inline year selector -->
+        <div class="save-row">
+          <select name="year" class="year-select">
+            <option value="">Year</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025" selected>2025</option>
+          </select>
+          <button type="submit">💾 Save Clip</button>
+        </div>
       </form>
     </div>
 

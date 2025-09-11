@@ -46,12 +46,17 @@ def players():
     return jsonify({"players": get_player_names()})
 
 
-@app.route("/clip/<player>/<path:filename>")
-def serve_clip(player, filename):
-    """Return the video file for the given player/filename."""
-    path = Path(config.BASE_DIR) / player / filename
+@app.route("/clip/<player>/<year>/<path:filename>")
+def serve_clip(player, year, filename):
+    """Return the video file for the given player/year/filename."""
+    path = Path(config.BASE_DIR) / player / year / filename
     if not path.exists():
-        abort(404)
+        # Fallback: try old flat structure for backward compatibility
+        old_path = Path(config.BASE_DIR) / player / filename
+        if old_path.exists():
+            path = old_path
+        else:
+            abort(404)
     return send_file(path)
 
 
@@ -69,20 +74,28 @@ def search_page():
             "situation": request.args.get("situation"),
             "quality": request.args.get("quality"),
             "distance": request.args.get("distance"),
+            "year": request.args.get("year"),
             "traits": [t for t in request.args.get("traits", "").split(",") if t],
             "roles": [r for r in request.args.get("roles", "").split(",") if r],
             "subroles": [s for s in request.args.get("subroles", "").split(",") if s],
             "badges": [b for b in request.args.get("badges", "").split(",") if b],
+            # Game information fields
+            "opponent": request.args.get("opponent"),
+            "home_away": request.args.get("home_away"),
+            "quarter": request.args.get("quarter"),
+            "down": request.args.get("down"),
         }
         logs = load_logs()
         for entry in logs:
             if matches(entry, filters):
-                path = Path(config.BASE_DIR) / entry["player"] / entry["filename"]
+                year = entry.get("year", "2025")  # Default year for backward compatibility
+                path = Path(config.BASE_DIR) / entry["player"] / year / entry["filename"]
                 results.append(
                     {
-                        "label": f"{entry['player']}: {entry['filename']}",
+                        "label": f"{entry['player']}: {entry['filename']} ({year})",
                         "full_path": str(path),
                         "player": entry["player"],
+                        "year": year,
                         "filename": entry["filename"],
                     }
                 )

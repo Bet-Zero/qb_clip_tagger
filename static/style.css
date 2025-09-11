@@ -480,6 +480,39 @@ input::placeholder,
   margin: 0.1rem 0;
 }
 
+/* Save row with inline year selector */
+.save-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 0.75rem;
+}
+
+.year-select {
+  position: absolute;
+  left: 0;
+  width: 70px;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #2c2c2e;
+  color: #f1f1f1;
+}
+
+.year-select:focus {
+  background: #2c2c2e;
+  color: #f1f1f1;
+  border-color: #333;
+  outline: none;
+}
+
+.year-select:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #2c2c2e inset;
+  -webkit-text-fill-color: #f1f1f1;
+}
+
 /* Simple search results styling */
 .results {
   list-style: none;
@@ -512,4 +545,54 @@ input::placeholder,
 }
 .copy-btn:hover {
   background: #555;
+}
+
+/* Game information row styling */
+.form-row.game-info input,
+.form-row.game-info select {
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
+.form-row.game-info input[name="opponent"] {
+  flex-basis: 40px;
+  min-width: 40px;
+}
+
+.form-row.game-info select[name="home_away"] {
+  flex-basis: 45px;
+  min-width: 45px;
+}
+
+.form-row.game-info input[name="score"] {
+  flex-basis: 60px;
+  min-width: 60px;
+}
+
+.form-row.game-info select[name="quarter"] {
+  flex-basis: 45px;
+  min-width: 45px;
+}
+
+.form-row.game-info input[name="down"] {
+  flex-basis: 35px;
+  min-width: 35px;
+}
+
+.form-row.game-info input[name="yards_to_go"] {
+  flex-basis: 40px;
+  min-width: 40px;
+}
+
+.form-row.game-info input[name="time_remaining"] {
+  flex-basis: 50px;
+  min-width: 50px;
+}
+
+/* Game information row styling */
+.form-row.game-info select {
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  flex: 1;
+  min-width: 0;
 }

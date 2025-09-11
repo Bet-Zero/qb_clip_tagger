@@ -5,6 +5,7 @@ import json
 import shutil
 import logging
 from pathlib import Path
+from datetime import datetime
 
 import config
 
@@ -16,6 +17,7 @@ def process_clip_tags(clip_path, data):
     player = data.get("player", [""])[0]
     playtype = data.get("playtype", [""])[0]
     outcome = data.get("outcome", [""])[0]
+    year = data.get("year", [str(datetime.now().year)])[0]  # Default to current year
 
     # Split comma-separated strings into arrays
     traits = data.get("traits", [""])[0].split(",") if data.get("traits") else []
@@ -32,18 +34,26 @@ def process_clip_tags(clip_path, data):
     situation = data.get("situation", [""])[0]
     quality = data.get("quality", ["Good"])[0]
     distance = data.get("distance", [""])[0]
+    
+    # Game information fields
+    opponent = data.get("opponent", [""])[0]
+    home_away = data.get("home_away", [""])[0]
+    quarter = data.get("quarter", [""])[0]
+    down = data.get("down", [""])[0]
 
-    # Rename file with incrementing numeric suffix if needed
+    # Create year-based subfolder structure
     ext = Path(clip_path).suffix
     base_name = f"{playtype}_{situation}_{outcome}"
-    new_dir = BASE_DIR / player
+    player_dir = BASE_DIR / player
+    year_dir = player_dir / year  # Add year subfolder
+    
     try:
-        new_dir.mkdir(parents=True, exist_ok=True)
+        year_dir.mkdir(parents=True, exist_ok=True)
         count = 0
-        candidate = new_dir / f"{base_name}{ext}"
+        candidate = year_dir / f"{base_name}{ext}"
         while candidate.exists():
             count += 1
-            candidate = new_dir / f"{base_name}_{count}{ext}"
+            candidate = year_dir / f"{base_name}_{count}{ext}"
         new_path = candidate
         shutil.move(clip_path, new_path)
         new_name = new_path.name
@@ -51,8 +61,8 @@ def process_clip_tags(clip_path, data):
         logging.error("Failed to move clip %s -> %s: %s", clip_path, new_path, exc)
         raise
 
-    # Save tags
-    log_path = BASE_DIR / player / "tag_log.json"
+    # Save tags to player-level log (not year-level to keep search simple)
+    log_path = player_dir / "tag_log.json"
     log = []
     if log_path.exists():
         try:
@@ -65,6 +75,7 @@ def process_clip_tags(clip_path, data):
     log.append(
         {
             "filename": new_name,
+            "year": year,  # Add year to the log entry
             "playtype": playtype,
             "outcome": outcome,
             "traits": traits,
@@ -75,6 +86,11 @@ def process_clip_tags(clip_path, data):
             "situation": situation,
             "quality": quality,
             "distance": distance,
+            # Game information fields
+            "opponent": opponent,
+            "home_away": home_away,
+            "quarter": quarter,
+            "down": down,
         }
     )
 
@@ -85,5 +101,5 @@ def process_clip_tags(clip_path, data):
         logging.error("Failed to write log %s: %s", log_path, exc)
         raise
 
-    logging.info("✅ Saved + moved: %s", new_name)
+    logging.info("✅ Saved + moved: %s to %s/%s", new_name, player, year)
 

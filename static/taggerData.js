@@ -124,17 +124,31 @@ const outcomes = [
 const situations = [
   { label: "Clean Pocket", value: "clean-pocket" },
   { label: "Pressure", value: "pressure" },
-  { label: "Blitz", value: "blitz" },
-  { label: "Red Zone", value: "red-zone" },
-  { label: "Goal Line", value: "goal-line" },
-  { label: "Third Down", value: "third-down" },
-  { label: "Fourth Down", value: "fourth-down" },
-  { label: "Two Minute Warning", value: "two-minute" },
-  { label: "Overtime", value: "overtime" },
-  { label: "Hurry Up", value: "hurry-up" },
+  { label: "Hit While Throwing", value: "hit-while-throwing" },
 ];
 
-const contexts = ["1Q", "2Q", "3Q", "4Q", "OT"];
+const contexts = [
+  "Missed Block",
+  "WR Slipped/Fell",
+  "Defender Slipped/Fell",
+  "Free Rusher",
+  "Knocked Down at Line",
+  "Wrong Route",
+  "Hospital Ball",
+  "Arm Punt",
+  "Free Play",
+  "Hail Mary",
+  "Circus Catch",
+  "Moss'd",
+  "Missed PI/DPI",
+  "PI/DPI Called",
+  "Pick Play",
+  "Tip/Deflection",
+  "Blown Coverage",
+  "Busted Play",
+  "Bad Snap",
+  "Timeout Called",
+];
 
 function toggleSelectLabel(event) {
   const target = event.currentTarget || event.target;
@@ -208,7 +222,7 @@ function populateTags() {
 
   // Situation & Context
   const situationSelect = document.querySelector("select[name='situation']");
-  const situationPlaceholder = new Option("Situation", "");
+  const situationPlaceholder = new Option("Pocket", "");
   situationPlaceholder.className = "placeholder-option";
   situationSelect.add(situationPlaceholder);
   situations.forEach(({ label, value }) => {

@@ -27,6 +27,7 @@ def test_process_clip_tags(monkeypatch, tmp_path):
         "player": ["Mahomes"],
         "playtype": ["dropback-pass"],
         "outcome": ["Completion"],
+        "year": ["2025"],
         "traits": [],
         "roles": [],
         "subroles": [],
@@ -39,7 +40,8 @@ def test_process_clip_tags(monkeypatch, tmp_path):
     tag_utils.process_clip_tags(str(clip_path), data)
 
     player_dir = base / "Mahomes"
-    files = [p for p in player_dir.iterdir() if p.suffix == ".mp4"]
+    year_dir = player_dir / "2025"  # Check year subfolder
+    files = [p for p in year_dir.iterdir() if p.suffix == ".mp4"]
     assert len(files) == 1
     saved = files[0]
     assert saved.name == "dropback-pass_clean-pocket_Completion.mp4"
@@ -47,6 +49,7 @@ def test_process_clip_tags(monkeypatch, tmp_path):
     with open(log_path) as f:
         log = json.load(f)
     assert log[0]["filename"] == saved.name
+    assert log[0]["year"] == "2025"
 
 
 def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
@@ -70,6 +73,7 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
         "player": ["Mahomes"],
         "playtype": ["dropback-pass"],
         "outcome": ["Completion"],
+        "year": ["2025"],
         "traits": [],
         "roles": [],
         "subroles": [],
@@ -83,7 +87,8 @@ def test_process_clip_tags_duplicates(monkeypatch, tmp_path):
     tag_utils.process_clip_tags(str(clip2), data)
 
     player_dir = base / "Mahomes"
-    names = sorted(p.name for p in player_dir.glob("*.mp4"))
+    year_dir = player_dir / "2025"  # Check year subfolder
+    names = sorted(p.name for p in year_dir.glob("*.mp4"))
     assert names == [
         "dropback-pass_clean-pocket_Completion.mp4",
         "dropback-pass_clean-pocket_Completion_1.mp4",
